@@ -3,7 +3,12 @@ I NEED TO ANSWER THE QUESTIONS, NO FORGETTERINO PLZ
 REMEMBER TO TAKE A LOOK INTO EXAMPLES OF BEST WAYS TO ANSWER A CUSTOMER
 
 1
+https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/
+
 "Algolia will search through any set of data, as long as it’s structured. This is what we call an index"
-  Index -> a structured set of data
+"An index is a collection of records that you create as soon as you send records to Algolia"
+  Index -> a structured set of data, that collects records provided by the user
 "The items are broken down into individual records (objects), with each object containing a set of fields (attributes)"
-  Record -> an entry in the dataset you provide that represents an item
+"An Algolia record (or object) is a set of key-value pairs called attributes"
+  Record -> an entry in the dataset you provide that represents an item, comprised of key-value pairs
+
