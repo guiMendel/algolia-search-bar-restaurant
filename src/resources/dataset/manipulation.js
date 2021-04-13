@@ -36,6 +36,27 @@ function show() {
   console.log(restaurants[0]);
 }
 
+// Substitute Diners Club and Carte Blanche payment methods to Discover card
+function substitutePaymentMethods(entry) {
+  let alreadyHasDiscover = false;
+  let shouldHaveDiscover = false;
+
+  // Removes Diners Club and Carte Blanche
+  entry.payment_options = entry.payment_options.filter((option) => {
+    if (option === "Diners Club" || option === "Carte Blanche") {
+      shouldHaveDiscover = true;
+      return false;
+    } else if (option === "Discover") {
+      alreadyHasDiscover = true;
+    }
+    return true;
+  });
+
+  // Inserts Discover, if necessary
+  if (shouldHaveDiscover && !alreadyHasDiscover)
+    entry.payment_options.push("Discover");
+}
+
 // Joins additional data with JSON data and pushes to algolia index
 function joinAndPush() {
   // Let's join the records
@@ -45,18 +66,19 @@ function joinAndPush() {
       // Two =s because one is string and other is number
       (entry) => entry.objectID == restaurant.objectID,
     );
-    if (!restaurant.phone || !counterpart.phone_number)
-      console.log(counterpart);
 
     // Drop the worst version of duplicated info
     delete restaurant.phone;
 
-    // Let's have these fields numbers, so that we can properly use them to rank results
+    // Price may be duplicated too, but one version's display ready
+    // and the other is better suited for ranking purposes, so we'll keep the two
+
+    // Treat Diners Club and Carte Blanche as Discover cards
+    substitutePaymentMethods(restaurant);
+
+    // Let's have these fields be numbers, so that we can properly use them to rank results
     counterpart.reviews_count = parseInt(counterpart.reviews_count);
     counterpart.stars_count = parseFloat(counterpart.stars_count);
-
-    // Price may be duplicated too, but one version's better to show to the client
-    // and the other is better for ranking purposes, so we'll keep the two
 
     // Join'em
     // We want id's as string, so let's have it be overwritten as well
