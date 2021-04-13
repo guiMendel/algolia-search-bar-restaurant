@@ -12,7 +12,7 @@ const envPath = path.join(process.cwd(), "..", "..", "..", ".env");
 dotenv.config({ path: envPath });
 
 // Let's get our beautiful algolia index
-const client = algoliasearch(process.env.APP_ID, process.env.API_KEY);
+const client = algoliasearch(process.env.VITE_APP_ID, process.env.VITE_API_KEY);
 const index = client.initIndex("restaurants");
 
 // Get base list of restaurants

@@ -1,18 +1,25 @@
 <template>
-  <!-- <search-bar />
-  <restaurant-index /> -->
-  <p>lel</p>
+  <search-bar @result="handleResult" />
+  <restaurant-index :restaurants="restaurants" />
 </template>
 
 <script>
-// import SearchBar from "./components/SearchBar.vue";
-// import RestaurantIndex from "./views/RestaurantIndex.vue";
+import SearchBar from "./components/SearchBar.vue";
+import RestaurantIndex from "./views/RestaurantIndex.vue";
 
 export default {
   name: "App",
   components: {
-    // RestaurantIndex,
-    // SearchBar,
+    RestaurantIndex,
+    SearchBar,
+  },
+  data: () => ({
+    restaurants: [],
+  }),
+  methods: {
+    handleResult(result) {
+      this.restaurants = result.hits;
+    },
   },
 };
 </script>
