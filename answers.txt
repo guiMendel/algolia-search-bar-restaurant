@@ -1,0 +1,9 @@
+I NEED TO ANSWER THE QUESTIONS, NO FORGETTERINO PLZ
+
+REMEMBER TO TAKE A LOOK INTO EXAMPLES OF BEST WAYS TO ANSWER A CUSTOMER
+
+1
+"Algolia will search through any set of data, as long as it’s structured. This is what we call an index"
+  Index -> a structured set of data
+"The items are broken down into individual records (objects), with each object containing a set of fields (attributes)"
+  Record -> an entry in the dataset you provide that represents an item
