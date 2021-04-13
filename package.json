@@ -1,6 +1,7 @@
 {
   "name": "algolia-search-bar-restaurant",
   "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build"
@@ -8,6 +9,7 @@
   "dependencies": {
     "algoliasearch": "^4.8.6",
     "algoliasearch-helper": "^3.4.4",
+    "csv-parser": "^3.0.0",
     "vue": "^3.0.4"
   },
   "devDependencies": {
