@@ -1,13 +1,18 @@
 <template>
+  <!-- <search-bar />
+  <restaurant-index /> -->
+  <p>lel</p>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import SearchBar from "./components/SearchBar.vue";
+// import RestaurantIndex from "./views/RestaurantIndex.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // RestaurantIndex,
+    // SearchBar,
+  },
+};
 </script>

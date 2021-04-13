@@ -1,0 +1,16 @@
+{
+  "name": "dataset",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reads and pushes data to algolia index",
+  "main": "manipulation.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "dotenv": "^8.2.0"
+  }
+}
