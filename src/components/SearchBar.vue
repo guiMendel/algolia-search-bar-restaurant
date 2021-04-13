@@ -1,12 +1,11 @@
 <template>
-  <input type="text" />
+  <input type="text" autocomplete="off" v-model="input" />
 </template>
 
 <script>
 import algoliasearch from "algoliasearch";
 import algoliasearchHelper from "algoliasearch-helper";
 
-console.log(import.meta.env);
 const client = algoliasearch(
   import.meta.env.VITE_APP_ID,
   import.meta.env.VITE_API_KEY
@@ -15,8 +14,10 @@ const helper = algoliasearchHelper(client, "restaurants");
 
 export default {
   name: "SearchBar",
+  emits: ["result"],
   data: () => ({
     helper,
+    input: "",
   }),
   created() {
     // Will transmit results to parent
@@ -26,6 +27,10 @@ export default {
     // Initial results
     this.helper.search();
   },
-  emits: ["result"],
+  watch: {
+    input(value) {
+      this.helper.setQuery(value).search();
+    },
+  },
 };
 </script>

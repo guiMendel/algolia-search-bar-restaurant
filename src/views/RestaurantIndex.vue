@@ -14,3 +14,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+main {
+  font-size: 1.2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+</style>
