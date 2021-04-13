@@ -51,6 +51,10 @@ function joinAndPush() {
     // Drop the worst version of duplicated info
     delete restaurant.phone;
 
+    // Let's have these fields numbers, so that we can properly use them to rank results
+    counterpart.reviews_count = parseInt(counterpart.reviews_count);
+    counterpart.stars_count = parseFloat(counterpart.stars_count);
+
     // Price may be duplicated too, but one version's better to show to the client
     // and the other is better for ranking purposes, so we'll keep the two
 
@@ -61,6 +65,9 @@ function joinAndPush() {
 
   // All's left to do now is push this list to the restaurants index
   index.saveObjects(restaurants);
+
+  // Uncomment this to update index
+  // index.partialUpdateObjects(restaurants);
 
   show();
 }
