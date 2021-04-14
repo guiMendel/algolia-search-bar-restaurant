@@ -51,11 +51,12 @@ export default {
   },
   methods: {
     onResult(event) {
+      // console.log(event.results);
       // Will transmit results to parent
       this.$emit("result", event.results);
 
       // Update facet lists
-      this.updateFacets(event.results.facets);
+      this.updateFacets(event.results.disjunctiveFacets);
       // For each facet that is available, update data facets to hold its possible values
       // Update the ui to show fact selection
     },

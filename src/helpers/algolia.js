@@ -20,6 +20,8 @@ const facets = [
   "country",
 ];
 
-const helper = algoliasearchHelper(client, "restaurants", { facets });
+const helper = algoliasearchHelper(client, "restaurants", {
+  disjunctiveFacets: facets,
+});
 
 export default helper;
