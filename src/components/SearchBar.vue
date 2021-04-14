@@ -76,7 +76,7 @@ export default {
 
 <style scoped>
 main {
-  top: 0.5rem;
+  top: 0;
   position: sticky;
 
   width: 100%;
@@ -85,14 +85,13 @@ main {
   flex-direction: column;
   align-items: center;
 
-  padding: 0.5rem 0;
+  padding: 0.7rem 0 0.5rem;
 
   gap: 0.5rem;
 
   background-color: white;
-  border-radius: 10px;
 
-  box-shadow: 0 1px 2px 0.5px var(--washed-gray);
+  box-shadow: 0 1px 200px 20px rgba(24, 24, 26, 0.2);
 }
 
 .searchbar {
@@ -102,7 +101,7 @@ main {
 
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--light-gray);
+  /* border-bottom: 1px solid var(--light-gray); */
 }
 
 .searchbar input {
@@ -117,7 +116,7 @@ main {
 }
 
 .searchbar input::placeholder {
-  color: var(--light-gray);
+  color: var(--text-light);
 }
 
 .searchbar span {
