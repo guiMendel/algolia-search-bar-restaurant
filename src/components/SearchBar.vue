@@ -2,7 +2,7 @@
   <main>
     <div class="searchbar">
       <span class="material-icons-round">search</span>
-      <input type="text" autocomplete="off" v-model="input" />
+      <input type="text" autocomplete="off" v-model="input" :placeholder="placeholder" />
     </div>
     <div class="facets">
       <dropdown-select
@@ -22,6 +22,9 @@ import DropdownSelect from "./DropdownSelect.vue";
 export default {
   name: "SearchBar",
   emits: ["result"],
+  props: {
+    placeholder: String,
+  },
   data: () => ({
     helper,
     facets: {},
@@ -79,7 +82,7 @@ main {
   background-color: white;
   border-radius: 10px;
 
-  box-shadow: 0 1px 2px 0.5px var(--light-gray);
+  box-shadow: 0 1px 2px 0.5px var(--washed-gray);
 }
 
 .searchbar {
@@ -101,6 +104,10 @@ main {
   outline: none;
 
   font-size: 1.1rem;
+}
+
+.searchbar input::placeholder {
+  color: var(--light-gray);
 }
 
 .searchbar span {
