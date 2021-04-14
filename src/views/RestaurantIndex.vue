@@ -1,6 +1,9 @@
 <template>
   <main>
-    <p v-if="restaurants.length == 0" class="no-match">Sorry, no matches!</p>
+    <loading v-if="restaurants.length == 0" :active="loading" />
+    <p v-if="restaurants.length == 0 && !loading" class="no-match">
+      Sorry, no matches!
+    </p>
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -24,6 +27,7 @@
 </template>
 
 <script>
+import Loading from "vue3-loading-overlay";
 import StarRating from "../components/StarRating.vue";
 
 export default {
@@ -33,10 +37,15 @@ export default {
   },
   components: {
     StarRating,
+    Loading,
   },
-  // created() {
-  //   console.log(this.restaurants[0]);
-  // },
+  data: () => ({
+    loading: true,
+  }),
+  created() {
+    // console.log(this.restaurants[0]);
+    setTimeout(() => (this.loading = false), 10000);
+  },
 };
 </script>
 

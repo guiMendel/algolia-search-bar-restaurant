@@ -10,7 +10,11 @@
       />
     </div>
     <div class="facets">
-      <p v-if="Object.keys(facets).length == 0" class="no-facets">
+      <!-- when no facets and no user input, its loading 99% of the times -->
+      <p
+        v-if="Object.keys(facets).length == 0 && input.length > 0"
+        class="no-facets"
+      >
         No filters available for this search
       </p>
       <dropdown-select
