@@ -3,19 +3,24 @@
     <!-- If something is selected, we want special colors -->
     <div
       class="dropdown-button"
-      :class="{ active: selectedOption }"
+      :class="{ active: selectedOptions.length }"
       @click="active = !active"
     >
-      <p>{{ format(selectedOption || placeholder) }}</p>
+      <p>
+        {{ format(selectedOptions, placeholder) }}
+        <div v-show="selectedOptions.length > 1" class="number-of-facets">{{
+          selectedOptions.length
+        }}</div>
+      </p>
       <span class="material-icons-round"> expand_more </span>
     </div>
     <list-select
       v-show="active"
-      :name="format(placeholder)"
+      :name="adjustCase(placeholder)"
       :options="options"
       :searchable="true"
       @close="closeDropdown"
-      @toggle-select="(option) => $emit('toggle-select', option)"
+      @toggle-select="toggleSelect"
     />
     <!-- <select :value="selectedOption" @input="select">
     <option disabled value="">{{ format(placeholder) }}</option>
@@ -41,12 +46,16 @@ export default {
     ListSelect,
   },
   data: () => ({
-    selectedOption: "",
+    selectedOptions: [],
     active: false,
   }),
   methods: {
     // Turns from snake case to capitalized case
-    format(title) {
+    format(selections, placeholder) {
+      if (selections.length == 1) return this.adjustCase(selections[0]);
+      return this.adjustCase(placeholder);
+    },
+    adjustCase(title) {
       return title
         .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -54,7 +63,17 @@ export default {
     },
     closeDropdown() {
       this.active = false;
-      console.log(this.options);
+      // console.log(this.options);
+    },
+    toggleSelect(option) {
+      this.$emit("toggle-select", option);
+      // If present, remove. Else, push.
+      const index = this.selectedOptions.indexOf(option);
+      if (index != -1) {
+        this.selectedOptions.splice(index, 1);
+      } else {
+        this.selectedOptions.push(option);
+      }
     },
     // select({ target: { value } }) {
     //   this.selectedOption = value;
@@ -66,7 +85,7 @@ export default {
 
 <style scoped>
 .dropdown-button {
-  --padv: 0.2rem;
+  --padv: 0.4rem;
   --padh: 0.7rem;
   --border: 1px;
 
@@ -105,5 +124,24 @@ export default {
 p {
   flex: 1;
   width: max-content;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.number-of-facets {
+  width: 20px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: var(--color-1);
+  color: var(--blue);
+  border-radius: 50%;
+
+  font-weight: 800;
 }
 </style>

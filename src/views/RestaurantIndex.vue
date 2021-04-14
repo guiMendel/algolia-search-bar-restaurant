@@ -1,5 +1,6 @@
 <template>
   <main>
+    <p v-if="restaurants.length == 0" class="no-match">Sorry, no matches!</p>
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -98,6 +99,10 @@ img {
   background-color: var(--washed-gray);
   padding: 0.2rem 0.5rem;
   border-radius: 30px;
+}
+
+.no-match {
+  font-size: 1.6rem;
 }
 </style>
 

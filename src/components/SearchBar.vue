@@ -10,6 +10,9 @@
       />
     </div>
     <div class="facets">
+      <p v-if="Object.keys(facets).length == 0" class="no-facets">
+        No filters available for this search
+      </p>
       <dropdown-select
         v-for="(options, facet) of facets"
         :key="facet"
@@ -140,5 +143,10 @@ main {
   /* 
   padding-bottom: 250px;
   margin-bottom: -250px; */
+}
+
+.no-facets {
+  font-style: italic;
+  color: var(--text-light);
 }
 </style>
