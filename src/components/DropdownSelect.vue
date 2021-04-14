@@ -3,15 +3,25 @@
     <p>{{ format(placeholder) }}</p>
     <span class="material-icons-round"> expand_more </span>
   </div>
+  <select :value="selected" @input="select">
+    <option disabled value="">{{ format(placeholder) }}</option>
+    <option v-for="(count, option) in options" :key="option" :value="option">
+      {{ option }}
+    </option>
+  </select>
 </template>
 
 <script>
 export default {
   name: "DropdownSelect",
+  emits: ["select"],
   props: {
     placeholder: String,
     options: Object,
   },
+  data: () => ({
+    selected: "",
+  }),
   methods: {
     // Turns from snake case to capitalized case
     format(title) {
@@ -19,6 +29,10 @@ export default {
         .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
+    },
+    select({ target: { value } }) {
+      this.selected = value;
+      this.$emit("select", value);
     },
   },
 };

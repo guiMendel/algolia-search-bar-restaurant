@@ -2,7 +2,12 @@
   <main>
     <div class="searchbar">
       <span class="material-icons-round">search</span>
-      <input type="text" autocomplete="off" v-model="input" :placeholder="placeholder" />
+      <input
+        type="text"
+        autocomplete="off"
+        v-model="input"
+        :placeholder="placeholder"
+      />
     </div>
     <div class="facets">
       <dropdown-select
@@ -10,6 +15,7 @@
         :key="facet"
         :placeholder="facet"
         :options="options"
+        @select="(selected) => selectFacet(facet, selected)"
       />
     </div>
   </main>
@@ -54,6 +60,10 @@ export default {
       for (const facet of facets) {
         this.facets[facet.name] = facet.data;
       }
+    },
+    // Redoes the search with new facet value
+    selectFacet(facet, value) {
+      this.helper.toggleFacetRefinement(facet, value).search();
     },
   },
   watch: {

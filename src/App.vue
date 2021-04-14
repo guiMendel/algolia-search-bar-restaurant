@@ -1,6 +1,9 @@
 <template>
   <div class="container">
-    <search-bar @result="handleResult" placeholder="search by name, cuisine or location" />
+    <search-bar
+      @result="handleResult"
+      placeholder="search by name, cuisine or location"
+    />
     <restaurant-index :restaurants="restaurants" />
   </div>
 </template>
