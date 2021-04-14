@@ -1,6 +1,8 @@
 <template>
-  <search-bar @result="handleResult" />
-  <restaurant-index :restaurants="restaurants" />
+  <div class="container">
+    <search-bar @result="handleResult" />
+    <restaurant-index :restaurants="restaurants" />
+  </div>
 </template>
 
 <script>
@@ -23,3 +25,14 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.container {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 0.5rem 1rem;
+}
+</style>
