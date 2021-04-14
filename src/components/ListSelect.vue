@@ -7,7 +7,12 @@
       <h1>{{ name }}</h1>
       <input v-if="searchable" type="text" placeholder="filter" />
       <ul>
-        <li v-for="({ selected, value }, option) in options" :key="option">
+        <li
+          v-for="({ selected, value }, option) in processedOptions"
+          :key="option"
+          :class="{ selected }"
+          @click="toggleSelected(option)"
+        >
           <span class="material-icons-round">{{
             selected ? "check_box" : "check_box_outline_blank"
           }}</span>
@@ -21,18 +26,57 @@
 <script>
 export default {
   name: "ListSelect",
-  emits: ["select", "search", "close"],
+  emits: ["toggle-select", "search", "close"],
   props: {
     name: String,
     options: Object,
     searchable: Boolean,
   },
+  data: () => ({
+    processedOptions: {},
+  }),
+  methods: {
+    toggleSelected(option) {
+      const wasSelected = this.processedOptions[option].selected;
+      this.processedOptions[option].selected = !wasSelected;
+
+      this.$emit("toggle-select", option);
+    },
+    processOptions() {
+      const newOptions = {};
+
+      // We add a 'selected' field to the options
+      for (const option in this.options) {
+        let selected = false;
+        // If already present, keep selected status
+        if (this.processedOptions[option]) {
+          selected = this.processedOptions[option].selected;
+        }
+        newOptions[option] = {
+          value: this.options[option],
+          selected,
+        };
+      }
+
+      this.processedOptions = newOptions;
+    },
+    // selectedOptions() {
+    //   const it = Object.entries(this.options)
+    //     // Filter to only selected options
+    //     .filter(([, { selected }]) => selected)
+    //     // Return only option names
+    //     .map(([option]) => option);
+    //   console.log(it);
+    //   return it;
+    // },
+  },
+  watch: {
+    options() {
+      this.processOptions();
+    },
+  },
   created() {
-    // We add a 'selected' field to the options
-    for (const option in this.options) {
-      this.options[option] = { value: this.options[option], selected: false };
-    }
-    // console.log(this.options);
+    this.processOptions();
   },
 };
 </script>
@@ -101,7 +145,7 @@ ul {
 ul {
   align-items: flex-start;
   text-align: start;
-  
+
   width: 100%;
   overflow: auto;
 }
@@ -129,6 +173,11 @@ li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+li.selected,
+li.selected span {
+  color: var(--blue);
 }
 
 span {

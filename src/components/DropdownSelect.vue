@@ -14,7 +14,8 @@
       :name="format(placeholder)"
       :options="options"
       :searchable="true"
-      @close="active = false"
+      @close="closeDropdown"
+      @toggle-select="(option) => $emit('toggle-select', option)"
     />
     <!-- <select :value="selectedOption" @input="select">
     <option disabled value="">{{ format(placeholder) }}</option>
@@ -31,7 +32,7 @@ import ListSelect from "./ListSelect.vue";
 
 export default {
   name: "DropdownSelect",
-  emits: ["select"],
+  emits: ["toggle-select"],
   props: {
     placeholder: String,
     options: Object,
@@ -51,10 +52,14 @@ export default {
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
     },
-    select({ target: { value } }) {
-      this.selectedOption = value;
-      this.$emit("select", value);
+    closeDropdown() {
+      this.active = false;
+      console.log(this.options);
     },
+    // select({ target: { value } }) {
+    //   this.selectedOption = value;
+    //   this.$emit("select", value);
+    // },
   },
 };
 </script>

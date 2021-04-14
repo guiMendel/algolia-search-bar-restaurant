@@ -15,7 +15,7 @@
         :key="facet"
         :placeholder="facet"
         :options="options"
-        @select="(selected) => selectFacet(facet, selected)"
+        @toggle-select="(option) => toggleFacet(facet, option)"
       />
     </div>
   </main>
@@ -57,12 +57,13 @@ export default {
       // Update the ui to show fact selection
     },
     updateFacets(facets) {
+      this.facets = {};
       for (const facet of facets) {
         this.facets[facet.name] = facet.data;
       }
     },
     // Redoes the search with new facet value
-    selectFacet(facet, value) {
+    toggleFacet(facet, value) {
       this.helper.toggleFacetRefinement(facet, value).search();
     },
   },
@@ -136,7 +137,7 @@ main {
 
   overflow-x: auto;
   overflow-y: visible;
-/* 
+  /* 
   padding-bottom: 250px;
   margin-bottom: -250px; */
 }
