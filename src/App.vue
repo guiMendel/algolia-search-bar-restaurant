@@ -24,7 +24,7 @@ export default {
   methods: {
     handleResult(result) {
       this.restaurants = result.hits;
-      console.log(this.restaurants[0])
+      // console.log(this.restaurants[0])
     },
   },
 };

@@ -12,9 +12,10 @@
   --text-blue: rgb(127, 192, 236);
   --text-yellow: rgb(255, 222, 38);
   --text-orange: rgb(255, 126, 20);
-  --blue: rgb(61, 104, 195);
-  --green: rgb(61, 195, 83);
+  --blue: #41428d;
+  --sage: #D1C897;
   --gold: rgb(255, 230, 88);
+  --green: rgb(61, 195, 83);
   --dark: rgb(40, 40, 54);
   --darker: rgb(36, 36, 46);
   --darkest: rgb(24, 24, 36);

@@ -33,9 +33,9 @@ export default {
   components: {
     StarRating,
   },
-  created() {
-    console.log(this.restaurants[0]);
-  },
+  // created() {
+  //   console.log(this.restaurants[0]);
+  // },
 };
 </script>
 

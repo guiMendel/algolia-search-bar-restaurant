@@ -134,6 +134,10 @@ main {
 
   gap: 0.5rem;
 
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: visible;
+/* 
+  padding-bottom: 250px;
+  margin-bottom: -250px; */
 }
 </style>
