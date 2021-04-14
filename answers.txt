@@ -12,3 +12,5 @@ https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/
 "An Algolia record (or object) is a set of key-value pairs called attributes"
   Record -> an entry in the dataset you provide that represents an item, comprised of key-value pairs
 
+3
+I have great news for you - we take pride in how simple Algolia is to set up and use!
