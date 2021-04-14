@@ -18,19 +18,20 @@
         No filters available for this search
       </p>
       <dropdown-select
-        v-for="(options, facet) of facets"
+        v-for="({ data, searchable }, facet) of facets"
         :key="facet"
         :placeholder="facet"
-        :options="options"
-        @toggle-select="(option) => toggleFacet(facet, option)"
+        :searchable="searchable"
+        :options="data"
+        @toggle-select="(name) => toggleFacet(facet, name)"
       />
     </div>
   </main>
 </template>
 
 <script>
-import helper from "../helpers/algolia";
-import DropdownSelect from "./DropdownSelect.vue";
+import { helper, searchable } from "../helpers/algolia"
+import DropdownSelect from "./DropdownSelect.vue"
 
 export default {
   name: "SearchBar",
@@ -40,6 +41,7 @@ export default {
   },
   data: () => ({
     helper,
+    searchable,
     facets: {},
     input: "",
   }),
@@ -48,39 +50,63 @@ export default {
   },
   created() {
     // this.helper.on("result", console.log);
-    this.helper.on("result", this.onResult);
+    this.helper.on("result", this.onResult)
 
     // Initial results
-    this.helper.search();
+    this.helper.search()
   },
   methods: {
     onResult(event) {
       // console.log(event.results);
       // Will transmit results to parent
-      this.$emit("result", event.results);
+      this.$emit("result", event.results)
 
       // Update facet lists
-      this.updateFacets(event.results.disjunctiveFacets);
-      // For each facet that is available, update data facets to hold its possible values
-      // Update the ui to show fact selection
+      this.updateFacets(event.results)
+      // this.helper.searchForFacetValues("food_type", "").then(console.log)
     },
-    updateFacets(facets) {
-      this.facets = {};
-      for (const facet of facets) {
-        this.facets[facet.name] = facet.data;
+    async updateFacets(results) {
+      const facets = results.disjunctiveFacets
+      this.facets = {}
+
+      // For each facet
+      for (const { name: facet } of facets) {
+        // If this facet is searchable
+        if (this.searchable.includes(facet)) {
+          const { facetHits } = await this.helper.searchForFacetValues(
+            facet,
+            "",
+          )
+
+          // Let's have this be in th same syntax as non-searchable facets
+          this.facets[facet] = {
+            data: facetHits.map(({ value: name, count, isRefined }) => ({
+              name,
+              count,
+              isRefined,
+            })),
+            searchable: true,
+          }
+        }
+        // If not searchable, we get all facets
+        else
+          this.facets[facet] = {
+            data: results.getFacetValues(facet),
+            searchable: false,
+          }
       }
     },
     // Redoes the search with new facet value
     toggleFacet(facet, value) {
-      this.helper.toggleFacetRefinement(facet, value).search();
+      this.helper.toggleFacetRefinement(facet, value).search()
     },
   },
   watch: {
     input(value) {
-      this.helper.setQuery(value).search();
+      this.helper.setQuery(value).search()
     },
   },
-};
+}
 </script>
 
 <style scoped>

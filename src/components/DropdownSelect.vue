@@ -1,24 +1,26 @@
 <template>
   <div class="container">
-    <!-- If something is selected, we want special colors -->
     <div
       class="dropdown-button"
       :class="{ active: selectedOptions.length }"
-      @click="active = !active"
+      @click="open = !open"
     >
-      <p>
-        {{ format(selectedOptions, placeholder) }}
-        <div v-show="selectedOptions.length > 1" class="number-of-facets">{{
-          selectedOptions.length
-        }}</div>
-      </p>
+      <div class="title">
+        <span>
+          {{ format(selectedOptions, placeholder) }}
+        </span>
+        <span v-show="selectedOptions.length > 1" class="number-of-facets">
+          {{ selectedOptions.length }}
+        </span>
+      </div>
       <span class="material-icons-round"> expand_more </span>
     </div>
+
     <list-select
-      v-show="active"
+      v-show="open"
       :name="adjustCase(placeholder)"
       :options="options"
-      :searchable="true"
+      :searchable="searchable"
       @close="closeDropdown"
       @toggle-select="toggleSelect"
     />
@@ -33,7 +35,7 @@
 
 <script>
 // Uses this selection list when dropdown is active
-import ListSelect from "./ListSelect.vue";
+import ListSelect from "./ListSelect.vue"
 
 export default {
   name: "DropdownSelect",
@@ -41,46 +43,50 @@ export default {
   props: {
     placeholder: String,
     options: Object,
+    searchable: Boolean,
   },
   components: {
     ListSelect,
   },
   data: () => ({
-    selectedOptions: [],
-    active: false,
+    open: false,
   }),
+  computed: {
+    selectedOptions() {
+      return (
+        this.options
+          // Only refined options
+          .filter(({ isRefined }) => isRefined)
+          // Only their names
+          .map(({ name }) => name)
+      )
+    },
+  },
   methods: {
     // Turns from snake case to capitalized case
     format(selections, placeholder) {
-      if (selections.length == 1) return this.adjustCase(selections[0]);
-      return this.adjustCase(placeholder);
+      if (selections.length == 1) return this.adjustCase(selections[0])
+      return this.adjustCase(placeholder)
     },
     adjustCase(title) {
       return title
         .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
+        .join(" ")
     },
     closeDropdown() {
-      this.active = false;
+      this.open = false
       // console.log(this.options);
     },
     toggleSelect(option) {
-      this.$emit("toggle-select", option);
-      // If present, remove. Else, push.
-      const index = this.selectedOptions.indexOf(option);
-      if (index != -1) {
-        this.selectedOptions.splice(index, 1);
-      } else {
-        this.selectedOptions.push(option);
-      }
+      this.$emit("toggle-select", option)
     },
     // select({ target: { value } }) {
     //   this.selectedOption = value;
     //   this.$emit("select", value);
     // },
   },
-};
+}
 </script>
 
 <style scoped>
@@ -121,7 +127,7 @@ export default {
   color: white;
 }
 
-p {
+.title {
   flex: 1;
   width: max-content;
 

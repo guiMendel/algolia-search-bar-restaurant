@@ -8,15 +8,15 @@
       <input v-if="searchable" type="text" placeholder="filter" />
       <ul>
         <li
-          v-for="({ selected, value }, option) in processedOptions"
-          :key="option"
-          :class="{ selected }"
-          @click="toggleSelected(option)"
+          v-for="{ name, count, isRefined } in options"
+          :key="name"
+          :class="{ selected: isRefined }"
+          @click="toggleSelected(name)"
         >
           <span class="material-icons-round">{{
-            selected ? "check_box" : "check_box_outline_blank"
+            isRefined ? "check_box" : "check_box_outline_blank"
           }}</span>
-          {{ option }} <em>({{ value }})</em>
+          {{ name }} <em>({{ count }})</em>
         </li>
       </ul>
     </div>
@@ -32,34 +32,31 @@ export default {
     options: Object,
     searchable: Boolean,
   },
-  data: () => ({
-    processedOptions: {},
-  }),
+  // data: () => ({
+  //   processedOptions: {},
+  // }),
   methods: {
     toggleSelected(option) {
-      const wasSelected = this.processedOptions[option].selected;
-      this.processedOptions[option].selected = !wasSelected;
-
-      this.$emit("toggle-select", option);
+      this.$emit("toggle-select", option)
     },
-    processOptions() {
-      const newOptions = {};
+    // processOptions() {
+    //   const newOptions = {};
 
-      // We add a 'selected' field to the options
-      for (const option in this.options) {
-        let selected = false;
-        // If already present, keep selected status
-        if (this.processedOptions[option]) {
-          selected = this.processedOptions[option].selected;
-        }
-        newOptions[option] = {
-          value: this.options[option],
-          selected,
-        };
-      }
+    //   // We add a 'selected' field to the options
+    //   for (const option in this.options) {
+    //     let selected = false;
+    //     // If already present, keep selected status
+    //     if (this.processedOptions[option]) {
+    //       selected = this.processedOptions[option].selected;
+    //     }
+    //     newOptions[option] = {
+    //       value: this.options[option],
+    //       selected,
+    //     };
+    //   }
 
-      this.processedOptions = newOptions;
-    },
+    //   this.processedOptions = newOptions;
+    // },
     // selectedOptions() {
     //   const it = Object.entries(this.options)
     //     // Filter to only selected options
@@ -70,15 +67,7 @@ export default {
     //   return it;
     // },
   },
-  watch: {
-    options() {
-      this.processOptions();
-    },
-  },
-  created() {
-    this.processOptions();
-  },
-};
+}
 </script>
 
 <style scoped>
@@ -103,6 +92,7 @@ export default {
 
 .list {
   width: max-content;
+  min-width: 80%;
   position: relative;
 
   max-height: 100%;
@@ -153,6 +143,8 @@ ul {
 h1 {
   font-size: 1.7rem;
   font-weight: 400;
+
+  margin: 0 2rem;
 
   /* margin-bottom: 1rem; */
 }
