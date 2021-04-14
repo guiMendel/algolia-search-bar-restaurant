@@ -116,7 +116,7 @@ main {
 }
 
 .searchbar input::placeholder {
-  color: var(--text-light);
+  color: var(--gray);
 }
 
 .searchbar span {

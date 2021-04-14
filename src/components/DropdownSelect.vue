@@ -45,7 +45,7 @@ div {
 
   padding: 0.2rem 0.7rem;
   border: 1px solid var(--light-gray);
-  border-radius: 20px;
+  border-radius: 30px;
 
   color: var(--text-light);
 }

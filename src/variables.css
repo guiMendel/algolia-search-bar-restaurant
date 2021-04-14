@@ -1,10 +1,10 @@
 :root {
   --color-1: rgb(255, 255, 255);
   --color-2: rgb(243, 246, 246);
-  --washed-gray: rgb(236, 236, 236);
+  --washed-gray: rgb(230, 230, 230);
   --light-gray: rgb(212, 212, 212);
   --gray: rgb(144, 144, 144);
-  --text: rgb(26, 26, 26);
+  --text: rgb(66, 66, 66);
   --text-light: rgb(122, 122, 122);
   --text-red: rgb(255, 38, 38);
   --text-violet: rgb(212, 94, 228);
@@ -14,6 +14,7 @@
   --text-orange: rgb(255, 126, 20);
   --blue: rgb(61, 104, 195);
   --green: rgb(61, 195, 83);
+  --gold: rgb(255, 230, 88);
   --dark: rgb(40, 40, 54);
   --darker: rgb(36, 36, 46);
   --darkest: rgb(24, 24, 36);
