@@ -10,6 +10,7 @@
         type="text"
         placeholder="filter"
         @input="searchFor"
+        ref="filter"
       />
       <ul>
         <!-- if no results -->
@@ -54,6 +55,20 @@ export default {
     async searchFor(event) {
       this.processedOptions = await this.search(event.target.value)
     },
+    // Closes popup. If used by an event listener, checks if it a keydown 'esc' event
+    close(event) {
+      if (!event || event.key == "Escape") {
+        window.removeEventListener("keydown", this.close)
+        this.$emit("close")
+      }
+    },
+  },
+  mounted() {
+    // console.log(this.$refs)
+    this.$refs?.filter?.focus()
+
+    // Close on esc
+    window.addEventListener("keydown", this.close)
   },
 }
 </script>

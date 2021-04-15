@@ -17,7 +17,7 @@
     </div>
 
     <list-select
-      v-show="isOpen"
+      v-if="isOpen"
       :name="adjustCase(placeholder)"
       :options="options"
       :search="search"
