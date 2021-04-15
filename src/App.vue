@@ -9,7 +9,7 @@
       <p class="number-of-results">
         {{ numberOfResults }}
       </p>
-      <restaurant-index :restaurants="results.hits" />
+      <restaurant-index :coords="coords" :restaurants="results.hits" />
     </template>
   </div>
 </template>
