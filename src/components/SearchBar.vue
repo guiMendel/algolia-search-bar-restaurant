@@ -69,6 +69,10 @@ export default {
       const facets = results.disjunctiveFacets
       this.facets = {}
 
+      // Searchable facets may omit refined facets if they're not included in the search results.
+      // Therefore, we need to manually add any missing refined facets, so the user can see they're refined!
+      const refinedFacets = results.getRefinements()
+
       // For each facet
       for (const { name: facet } of facets) {
         // If this facet is searchable
@@ -78,7 +82,7 @@ export default {
             "",
           )
 
-          // Let's have this be in th same syntax as non-searchable facets
+          // Let's have this be in the same syntax as non-searchable facets
           this.facets[facet] = {
             data: facetHits.map(({ value: name, count, isRefined }) => ({
               name,
@@ -87,6 +91,22 @@ export default {
             })),
             searchable: true,
           }
+
+          // Get the refined values that are missing in the search results
+          const refined = refinedFacets
+            .filter(
+              // From all already refined facets
+              ({ attributeName, name: refinedValue }) =>
+                // Only those that match this facet
+                attributeName === facet &&
+                // And that are not already present in the search results
+                !facetHits.find(({ value }) => value === refinedValue),
+            )
+            // Reformat them to our syntax
+            .map(({ name, count }) => ({ name, count, isRefined: true }))
+
+          // Add them to the results
+          this.facets[facet].data.push(...refined)
         }
         // If not searchable, we get all facets
         else
