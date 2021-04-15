@@ -187,6 +187,8 @@ main {
 
   animation: slide-down 500ms cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
   animation-delay: 200ms;
+
+  /* transition: all 1s; */
 }
 
 .searchbar {
@@ -249,6 +251,21 @@ main {
 
   to {
     transform: none;
+  }
+}
+
+@media (min-width: 650px) {
+  main {
+    top: 1rem;
+    margin-bottom: 1rem;
+
+    width: 90%;
+    max-width: max-content;
+    min-width: 50vw;
+
+    border-radius: 20px;
+    box-shadow: 0 1px 200px 20px rgba(24, 24, 26, 0.2),
+      0 4px 20px 2px rgba(24, 24, 26, 0.2);
   }
 }
 </style>

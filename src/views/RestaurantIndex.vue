@@ -44,7 +44,7 @@ export default {
   }),
   created() {
     // console.log(this.restaurants[0]);
-    setTimeout(() => (this.loading = false), 10000)
+    setTimeout(() => (this.loading = false), 2000)
   },
 }
 </script>
@@ -62,12 +62,17 @@ main {
 }
 
 .restaurant {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+
+  place-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   background-color: var(--color-2);
 
   width: 80%;
+  max-width: 50rem;
 
   text-align: flex;
 
@@ -75,8 +80,6 @@ main {
 }
 
 .restaurant > .details {
-  flex: 1;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -85,12 +88,14 @@ main {
 }
 
 h1 {
-  font-size: 1.5rem;
+  font-size: 1.2em;
   font-weight: 400;
 }
 
 img {
-  width: 45%;
+  width: 30vw;
+  max-width: 368px;
+
   border-radius: 10px;
   /* border: 1px solid gray; */
 }
@@ -103,7 +108,7 @@ img {
   gap: 0.2rem;
 
   color: var(--text-light);
-  font-size: 1rem;
+  font-size: 0.8em;
 }
 
 .misc > span {
@@ -123,6 +128,20 @@ img {
 
   to {
     opacity: 1;
+  }
+}
+
+@media (min-width: 850px) {
+  .restaurant > .details {
+    font-size: 1.4rem;
+  }
+}
+
+@media (min-width: 850px) {
+  main {
+    align-self: flex-start;
+    align-items: flex-start;
+    padding-left: 15vw;
   }
 }
 </style>

@@ -55,11 +55,20 @@ export default {
 
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .number-of-results {
   margin-top: 0.5rem;
   color: var(--text-light);
   font-weight: 300;
+}
+
+@media (min-width: 850px) {
+.number-of-results {
+  font-size: 1.3rem;
+  margin: 1.3rem 0;
+}
+
 }
 </style>

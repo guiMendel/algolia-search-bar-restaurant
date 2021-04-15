@@ -43,6 +43,10 @@ export default {
   color: var(--gold);
 }
 
+.stars > span {
+  font-size: 1.2em;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -54,5 +58,7 @@ export default {
   font-style: italic;
   color: var(--text-light);
   font-weight: 300;
+
+  /* fontsiz */
 }
 </style>

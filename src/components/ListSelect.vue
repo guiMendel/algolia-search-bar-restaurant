@@ -80,7 +80,7 @@ export default {
 
 .list {
   width: max-content;
-  min-width: 80%;
+  min-width: 15rem;
   position: relative;
 
   max-height: 100%;
