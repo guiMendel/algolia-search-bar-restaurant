@@ -21,6 +21,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+span:not(.material-icons-round),
+p,
+small,
+em,
+h1 {
+  user-select: text;
+}
+
 /* Hide scrollbar for Chrome, Safari and Opera */
 /* *::-webkit-scrollbar {
   display: none;
