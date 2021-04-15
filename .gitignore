@@ -1,5 +1,4 @@
-# Sure it'd be nice to hide our .env, but in this case I want them public so the app can be tested!
-
+.env
 node_modules
 **/*.DS_Store
 assets/css/*

@@ -42,6 +42,7 @@ export default {
   emits: ["result"],
   props: {
     placeholder: String,
+    coords: Object,
   },
   data: () => ({
     helper,
@@ -58,14 +59,25 @@ export default {
   components: {
     DropdownSelect,
   },
-  created() {
+  mounted() {
     // this.helper.on("result", console.log);
     this.helper.on("result", this.onResult)
+
+    // If we already have coords, use them
+    this.updateGeolocation()
 
     // Initial results
     this.helper.search()
   },
   methods: {
+    updateGeolocation() {
+      // Activate geolocation
+      if (this.coords) {
+        const stringCoords = `${this.coords.latitude}, ${this.coords.longitude}`
+        console.log(stringCoords)
+        this.helper.setQueryParameter("aroundLatLng", stringCoords).search()
+      }
+    },
     // Orders refined facets first
     refinedFacetsFirst(facets) {
       const refined = {}
@@ -158,7 +170,11 @@ export default {
   },
   watch: {
     input(value) {
+      if (this.coords.loading) return
       this.helper.setQuery(value).search()
+    },
+    coords() {
+      this.updateGeolocation()
     },
   },
 }

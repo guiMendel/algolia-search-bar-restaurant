@@ -141,6 +141,13 @@
     "lodash" "^4.17.19"
     "to-fast-properties" "^2.0.0"
 
+"@googlemaps/js-api-loader@^1.11.3":
+  "integrity" "sha512-MUX04/b5dBIqi2jl2/89FS48gWPm5cgUwO4dDffIoylKv/e7HP9gJvpKqk1/JMIYPX2y/qO2TqFteRAWmNU1BA=="
+  "resolved" "https://registry.npmjs.org/@googlemaps/js-api-loader/-/js-api-loader-1.11.3.tgz"
+  "version" "1.11.3"
+  dependencies:
+    "fast-deep-equal" "^3.1.3"
+
 "@koa/cors@^3.1.0":
   "integrity" "sha512-7ulRC1da/rBa6kj6P4g2aJfnET3z8Uf3SWu60cjbtxTA5g8lxRdX/Bd2P92EagGwwAhANeNw8T8if99rJliR6Q=="
   "resolved" "https://registry.npmjs.org/@koa/cors/-/cors-3.1.0.tgz"
@@ -973,6 +980,11 @@
     "onetime" "^5.1.0"
     "signal-exit" "^3.0.2"
     "strip-final-newline" "^2.0.0"
+
+"fast-deep-equal@^3.1.3":
+  "integrity" "sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q=="
+  "resolved" "https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz"
+  "version" "3.1.3"
 
 "fast-glob@^3.1.1":
   "integrity" "sha512-2DtFcgT68wiTTiwZ2hNdJfcHNke9XOfnwmBRWXhmeKM8rF0TGwmC/Qto3S7RoZKp5cilZbxzO5iTNTQsJ+EeDg=="
@@ -2083,6 +2095,11 @@
   "integrity" "sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA=="
   "resolved" "https://registry.npmjs.org/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz"
   "version" "1.4.8"
+
+"spherical-geometry-js@^2.0.0":
+  "integrity" "sha512-Bv15UFHk2Bd+kjzjcy8cbOVsEpe1cAUss4gPxUtaRMjfS109DvsXDimHwkvDrE/Vvcut+FoABDsfR5kEeYXOjw=="
+  "resolved" "https://registry.npmjs.org/spherical-geometry-js/-/spherical-geometry-js-2.0.0.tgz"
+  "version" "2.0.0"
 
 "statuses@^1.5.0", "statuses@>= 1.2.1 < 2", "statuses@>= 1.4.0 < 2", "statuses@>= 1.5.0 < 2":
   "integrity" "sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow="
