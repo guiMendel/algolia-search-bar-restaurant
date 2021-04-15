@@ -130,7 +130,9 @@ export default {
         // If not searchable, we get all facets
         else {
           this.facets[facet] = {
-            data: results.getFacetValues(facet),
+            data: results.getFacetValues(facet, {
+              sortBy: ["count:desc"],
+            }),
             searchable: false,
           }
         }
