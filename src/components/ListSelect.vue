@@ -108,6 +108,14 @@ export default {
   border-radius: 50%;
 
   font-size: 2rem;
+
+  cursor: pointer;
+
+  transition: background 70ms;
+}
+
+.close:hover {
+  background-color: var(--vibrant-blue);
 }
 
 .list,
@@ -153,6 +161,13 @@ li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
+  cursor: pointer;
+}
+
+li:hover {
+  /* color: var(--text-light); */
+  filter: brightness(0.6);
 }
 
 li.selected,
