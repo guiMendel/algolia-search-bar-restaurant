@@ -87,7 +87,8 @@ export default {
 
   padding: 1rem;
   border-radius: 10px;
-  background-color: var(--color-1);
+
+  background: var(--background);
 
   align-items: center;
 
@@ -155,6 +156,9 @@ input {
   border: 2px solid var(--text-light);
 
   color: var(--text-light);
+
+  background: none;
+  outline: none;
 }
 
 li {
