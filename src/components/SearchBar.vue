@@ -23,6 +23,8 @@
         :placeholder="facet"
         :searchable="searchable"
         :options="data"
+        :is-open="currentlyOpenFacetMenu === facet"
+        :set-open="(state) => setOpen(facet, state)"
         @toggle-select="(name) => toggleFacet(facet, name)"
       />
     </div>
@@ -41,9 +43,13 @@ export default {
   },
   data: () => ({
     helper,
+    // Indicates which facets are searchable
     searchable,
+    // Syntax: { searchable, data: { name, count, isRefined } }
     facets: {},
     input: "",
+    // Indicates which facet menu is currently open (as this is a prototype, it's not worth using routes)
+    currentlyOpenFacetMenu: null,
   }),
   components: {
     DropdownSelect,
@@ -56,6 +62,10 @@ export default {
     this.helper.search()
   },
   methods: {
+    // The function we wrap and give to the dropdowns so they can control their "openness"
+    setOpen(facet, state) {
+      this.currentlyOpenFacetMenu = state ? facet : null
+    },
     onResult(event) {
       // console.log(event.results);
       // Will transmit results to parent

@@ -3,7 +3,7 @@
     <div
       class="dropdown-button"
       :class="{ active: selectedOptions.length }"
-      @click="open = !open"
+      @click="setOpen(true)"
     >
       <div class="title">
         <span>
@@ -17,11 +17,11 @@
     </div>
 
     <list-select
-      v-show="open"
+      v-show="isOpen"
       :name="adjustCase(placeholder)"
       :options="options"
       :searchable="searchable"
-      @close="closeDropdown"
+      @close="setOpen(false)"
       @toggle-select="toggleSelect"
     />
     <!-- <select :value="selectedOption" @input="select">
@@ -44,13 +44,13 @@ export default {
     placeholder: String,
     options: Object,
     searchable: Boolean,
+    isOpen: Boolean,
+    // Wrapper bestowed by parent to allow us to change isOpen state
+    setOpen: Function,
   },
   components: {
     ListSelect,
   },
-  data: () => ({
-    open: false,
-  }),
   computed: {
     selectedOptions() {
       return (
@@ -73,10 +73,6 @@ export default {
         .split("_")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ")
-    },
-    closeDropdown() {
-      this.open = false
-      // console.log(this.options);
     },
     toggleSelect(option) {
       this.$emit("toggle-select", option)
