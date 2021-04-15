@@ -20,7 +20,7 @@
       v-show="isOpen"
       :name="adjustCase(placeholder)"
       :options="options"
-      :searchable="searchable"
+      :search="search"
       @close="setOpen(false)"
       @toggle-select="toggleSelect"
     />
@@ -43,7 +43,7 @@ export default {
   props: {
     placeholder: String,
     options: Object,
-    searchable: Boolean,
+    search: Function,
     isOpen: Boolean,
     // Wrapper bestowed by parent to allow us to change isOpen state
     setOpen: Function,

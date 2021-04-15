@@ -21,7 +21,9 @@
         v-for="({ data, searchable }, facet) of facets"
         :key="facet"
         :placeholder="facet"
-        :searchable="searchable"
+        :search="
+          searchable ? async (query) => searchFacetValues(facet, query) : null
+        "
         :options="data"
         :is-open="currentlyOpenFacetMenu === facet"
         :set-open="(state) => setOpen(facet, state)"
@@ -50,6 +52,8 @@ export default {
     input: "",
     // Indicates which facet menu is currently open (as this is a prototype, it's not worth using routes)
     currentlyOpenFacetMenu: null,
+    // Info on all refined facets
+    refinedFacets: [],
   }),
   components: {
     DropdownSelect,
@@ -74,56 +78,62 @@ export default {
       // Update facet lists
       this.updateFacets(event.results)
       // this.helper.searchForFacetValues("food_type", "").then(console.log)
+      // console.log(this.helper.getRefinements("food_type"))
+    },
+    // Wrapper for searchForFacetValues that already includes any missing refined values
+    // Third parameter is optional, if missing we make another call to api
+    async searchFacetValues(facet, query) {
+      const { facetHits } = await this.helper.searchForFacetValues(facet, query)
+
+      // Return it in the facet syntax adopted
+      const result = facetHits.map(({ value: name, count, isRefined }) => ({
+        name,
+        count,
+        isRefined,
+      }))
+
+      // searchForFacetValues may omit refined facets if they're not included in the search results.
+      // Therefore, we need to manually add any missing refined facets, so the user can see they're refined!
+      const refined = this.refinedFacets
+        .filter(
+          // From all already refined facets
+          ({ attributeName, name: refinedValue }) =>
+            // Only those that match this facet
+            attributeName === facet &&
+            // And that are not already present in the search results
+            !facetHits.find(({ value }) => value === refinedValue),
+        )
+        // Reformat them to our syntax
+        .map(({ name, count }) => ({ name, count, isRefined: true }))
+
+      // Add them to the results
+      result.push(...refined)
+
+      return result
     },
     async updateFacets(results) {
       const facets = results.disjunctiveFacets
       this.facets = {}
 
-      // Searchable facets may omit refined facets if they're not included in the search results.
-      // Therefore, we need to manually add any missing refined facets, so the user can see they're refined!
-      const refinedFacets = results.getRefinements()
+      this.refinedFacets = results.getRefinements()
 
       // For each facet
       for (const { name: facet } of facets) {
         // If this facet is searchable
         if (this.searchable.includes(facet)) {
-          const { facetHits } = await this.helper.searchForFacetValues(
-            facet,
-            "",
-          )
-
-          // Let's have this be in the same syntax as non-searchable facets
           this.facets[facet] = {
-            data: facetHits.map(({ value: name, count, isRefined }) => ({
-              name,
-              count,
-              isRefined,
-            })),
+            // This method already adopts the same syntax as non-searchable facets
+            data: await this.searchFacetValues(facet, ""),
             searchable: true,
           }
-
-          // Get the refined values that are missing in the search results
-          const refined = refinedFacets
-            .filter(
-              // From all already refined facets
-              ({ attributeName, name: refinedValue }) =>
-                // Only those that match this facet
-                attributeName === facet &&
-                // And that are not already present in the search results
-                !facetHits.find(({ value }) => value === refinedValue),
-            )
-            // Reformat them to our syntax
-            .map(({ name, count }) => ({ name, count, isRefined: true }))
-
-          // Add them to the results
-          this.facets[facet].data.push(...refined)
         }
         // If not searchable, we get all facets
-        else
+        else {
           this.facets[facet] = {
             data: results.getFacetValues(facet),
             searchable: false,
           }
+        }
       }
     },
     // Redoes the search with new facet value

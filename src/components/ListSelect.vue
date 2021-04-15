@@ -5,10 +5,20 @@
         >close</span
       >
       <h1>{{ name }}</h1>
-      <input v-if="searchable" type="text" placeholder="filter" />
+      <input
+        v-if="search"
+        type="text"
+        placeholder="filter"
+        @input="searchFor"
+      />
       <ul>
+        <!-- if no results -->
+        <p v-show="processedOptions.length == 0" class="no-results">
+          No results for the current filter combination
+        </p>
+        <!-- result list -->
         <li
-          v-for="{ name, count, isRefined } in options"
+          v-for="{ name, count, isRefined } in processedOptions"
           :key="name"
           :class="{ selected: isRefined }"
           @click="toggleSelected(name)"
@@ -30,42 +40,20 @@ export default {
   props: {
     name: String,
     options: Object,
-    searchable: Boolean,
+    search: Function,
   },
-  // data: () => ({
-  //   processedOptions: {},
-  // }),
+  data() {
+    return {
+      processedOptions: this.options,
+    }
+  },
   methods: {
     toggleSelected(option) {
       this.$emit("toggle-select", option)
     },
-    // processOptions() {
-    //   const newOptions = {};
-
-    //   // We add a 'selected' field to the options
-    //   for (const option in this.options) {
-    //     let selected = false;
-    //     // If already present, keep selected status
-    //     if (this.processedOptions[option]) {
-    //       selected = this.processedOptions[option].selected;
-    //     }
-    //     newOptions[option] = {
-    //       value: this.options[option],
-    //       selected,
-    //     };
-    //   }
-
-    //   this.processedOptions = newOptions;
-    // },
-    // selectedOptions() {
-    //   const it = Object.entries(this.options)
-    //     // Filter to only selected options
-    //     .filter(([, { selected }]) => selected)
-    //     // Return only option names
-    //     .map(([option]) => option);
-    //   console.log(it);
-    //   return it;
-    // },
+    async searchFor(event) {
+      this.processedOptions = await this.search(event.target.value)
+    },
   },
 }
 </script>
@@ -179,5 +167,10 @@ span {
 em {
   color: var(--text-light);
   font-weight: 300;
+}
+
+.no-results {
+  text-align: center;
+  margin: 1rem 0;
 }
 </style>
