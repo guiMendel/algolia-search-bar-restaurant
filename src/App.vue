@@ -1,16 +1,21 @@
 <template>
   <div class="container">
     <search-bar
-      @result="handleResult"
+      @result="handleResults"
       placeholder="search by name, cuisine or location"
     />
-    <restaurant-index :restaurants="restaurants" />
+    <template v-if="results.hits">
+      <p class="number-of-results">
+        {{ numberOfResults }}
+      </p>
+      <restaurant-index :restaurants="results.hits" />
+    </template>
   </div>
 </template>
 
 <script>
-import SearchBar from "./components/SearchBar.vue";
-import RestaurantIndex from "./views/RestaurantIndex.vue";
+import SearchBar from "./components/SearchBar.vue"
+import RestaurantIndex from "./views/RestaurantIndex.vue"
 
 export default {
   name: "App",
@@ -19,15 +24,29 @@ export default {
     SearchBar,
   },
   data: () => ({
-    restaurants: [],
+    results: {},
   }),
-  methods: {
-    handleResult(result) {
-      this.restaurants = result.hits;
-      // console.log(this.restaurants[0])
+  computed: {
+    numberOfResults() {
+      return `
+          ${
+            this.results.nbHits > 999
+              ? Math.round(this.results.nbHits / 1000) + "k"
+              : this.results.nbHits
+          } ${this.results.nbHits > 1 ? "results" : "result"} found in ${
+        this.results.processingTimeMS > 99
+          ? this.results.processingTimeMS / 1000.0 + " s"
+          : this.results.processingTimeMS + " ms"
+      }`
     },
   },
-};
+  methods: {
+    handleResults(results) {
+      this.results = results
+      console.log(results)
+    },
+  },
+}
 </script>
 
 <style scoped>
@@ -36,5 +55,11 @@ export default {
 
   display: flex;
   flex-direction: column;
+}
+
+.number-of-results {
+  margin-top: 0.5rem;
+  color: var(--text-light);
+  font-weight: 300;
 }
 </style>
