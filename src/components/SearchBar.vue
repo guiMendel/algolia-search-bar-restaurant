@@ -18,7 +18,7 @@
         No filters available for this search
       </p>
       <dropdown-select
-        v-for="({ data, searchable }, facet) of facets"
+        v-for="({ data, searchable }, facet) of refinedFacetsFirst(facets)"
         :key="facet"
         :placeholder="facet"
         :search="
@@ -66,6 +66,19 @@ export default {
     this.helper.search()
   },
   methods: {
+    // Orders refined facets first
+    refinedFacetsFirst(facets) {
+      const refined = {}
+      const unrefined = {}
+      for (const facet in facets) {
+        if (facets[facet].data.find((value) => value.isRefined)) {
+          refined[facet] = facets[facet]
+        } else {
+          unrefined[facet] = facets[facet]
+        }
+      }
+      return Object.assign(refined, unrefined)
+    },
     // The function we wrap and give to the dropdowns so they can control their "openness"
     setOpen(facet, state) {
       this.currentlyOpenFacetMenu = state ? facet : null
