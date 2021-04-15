@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <circle-button
+      class="toggle-NY-coords"
+      @click="useNYcoords = !useNYcoords"
+      :icon="useNYcoords ? 'gps_off' : 'gps_fixed'"
+    />
     <search-bar
       @result="handleResults"
       :coords="coords"
@@ -15,6 +20,7 @@
 </template>
 
 <script>
+import CircleButton from "./components/CircleButton.vue"
 import SearchBar from "./components/SearchBar.vue"
 import RestaurantIndex from "./views/RestaurantIndex.vue"
 
@@ -23,10 +29,12 @@ export default {
   components: {
     RestaurantIndex,
     SearchBar,
+    CircleButton,
   },
   data: () => ({
     results: {},
     coords: null,
+    useNYcoords: false,
   }),
   computed: {
     numberOfResults() {
@@ -47,21 +55,30 @@ export default {
       this.results = results
       // console.log(results)
     },
+    getLocation() {
+      // Get user's location
+      navigator?.geolocation.getCurrentPosition(
+        ({ coords: { latitude, longitude } }) =>
+          (this.coords = { latitude, longitude }),
+        // On error, just log
+        console.error,
+      )
+    },
   },
   created() {
-    // Use New York as default location
-    // this.coords = {
-    //   latitude: 40.71,
-    //   longitude: -74.01,
-    // }
-
-    // Get user's location
-    navigator?.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) =>
-        (this.coords = { latitude, longitude }),
-      // On error, just log
-      console.error,
-    )
+    this.getLocation()
+  },
+  watch: {
+    useNYcoords(use) {
+      if (use) {
+        this.coords = {
+          latitude: 40.71,
+          longitude: -74.01,
+        }
+      } else {
+        this.getLocation()
+      }
+    },
   },
 }
 </script>
@@ -73,12 +90,20 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  padding-bottom: 8rem;
 }
 
 .number-of-results {
   margin-top: 0.5rem;
   color: var(--text-light);
   font-weight: 300;
+}
+
+.toggle-NY-coords {
+  position: fixed;
+  bottom: 3rem;
+  right: 2rem;
 }
 
 @media (min-width: 850px) {

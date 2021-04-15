@@ -74,7 +74,7 @@ export default {
       // Activate geolocation
       if (this.coords) {
         const stringCoords = `${this.coords.latitude}, ${this.coords.longitude}`
-        console.log(stringCoords)
+        // console.log(stringCoords)
         this.helper.setQueryParameter("aroundLatLng", stringCoords).search()
       }
     },
