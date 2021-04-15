@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import Loading from "vue3-loading-overlay";
-import StarRating from "../components/StarRating.vue";
+import Loading from "vue3-loading-overlay"
+import StarRating from "../components/StarRating.vue"
 
 export default {
   name: "RestaurantIndex",
@@ -44,9 +44,9 @@ export default {
   }),
   created() {
     // console.log(this.restaurants[0]);
-    setTimeout(() => (this.loading = false), 10000);
+    setTimeout(() => (this.loading = false), 10000)
   },
-};
+}
 </script>
 
 <style scoped>
@@ -70,6 +70,8 @@ main {
   width: 80%;
 
   text-align: flex;
+
+  animation: fade-in 200ms backwards;
 }
 
 .restaurant > .details {
@@ -112,6 +114,16 @@ img {
 
 .no-match {
   font-size: 1.6rem;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 </style>
 

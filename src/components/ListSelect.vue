@@ -158,6 +158,7 @@ li {
 li.selected,
 li.selected span {
   color: var(--blue);
+  animation: colorize 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) backwards;
 }
 
 span {
@@ -172,5 +173,15 @@ em {
 .no-results {
   text-align: center;
   margin: 1rem 0;
+}
+
+@keyframes colorize {
+  from {
+    color: var(--vibrant-blue);
+  }
+
+  to {
+    color: default;
+  }
 }
 </style>

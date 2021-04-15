@@ -154,6 +154,8 @@ main {
   top: 0;
   position: sticky;
 
+  z-index: 100;
+
   width: 100%;
 
   display: flex;
@@ -167,6 +169,9 @@ main {
   background-color: white;
 
   box-shadow: 0 1px 200px 20px rgba(24, 24, 26, 0.2);
+
+  animation: slide-down 500ms cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
+  animation-delay: 200ms;
 }
 
 .searchbar {
@@ -200,8 +205,9 @@ main {
 
 .facets {
   width: 100%;
+  height: 3rem;
 
-  padding: 0.3rem 1rem;
+  padding: 0 1rem;
 
   display: flex;
   align-items: center;
@@ -219,5 +225,15 @@ main {
 .no-facets {
   font-style: italic;
   color: var(--text-light);
+}
+
+@keyframes slide-down {
+  from {
+    transform: translate(0, -100%);
+  }
+
+  to {
+    transform: none;
+  }
 }
 </style>

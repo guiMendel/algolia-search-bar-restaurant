@@ -24,12 +24,6 @@
       @close="setOpen(false)"
       @toggle-select="toggleSelect"
     />
-    <!-- <select :value="selectedOption" @input="select">
-    <option disabled value="">{{ format(placeholder) }}</option>
-    <option v-for="(count, option) in options" :key="option" :value="option">
-      {{ option }} ({{ count }})
-    </option>
-  </select> -->
   </div>
 </template>
 
@@ -104,6 +98,8 @@ export default {
   box-sizing: border-box;
 
   cursor: pointer;
+
+  transition: all 100ms;
 }
 
 .dropdown-button:active,
