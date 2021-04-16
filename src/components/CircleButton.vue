@@ -14,6 +14,8 @@ export default {
 
 <style scoped>
 span {
+  z-index: 50;
+  
   font-size: 2em;
 
   width: 2em;
