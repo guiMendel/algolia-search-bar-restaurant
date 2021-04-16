@@ -4,7 +4,12 @@
     rgba(249, 249, 249, 1) 0%,
     rgba(244, 252, 255, 1) 100%
   );
-  --button-back:radial-gradient(circle, rgba(249,249,249,1) 0%, rgba(239,245,247,1) 100%);
+  --background-blue: linear-gradient(135deg, rgba(39,50,146,1) 0%, rgba(29,103,162,1) 100%);
+  --button-back: radial-gradient(
+    circle,
+    rgba(249, 249, 249, 1) 0%,
+    rgba(239, 245, 247, 1) 100%
+  );
   --button-back-blue: radial-gradient(
     circle,
     rgba(39, 50, 146, 1) 0%,

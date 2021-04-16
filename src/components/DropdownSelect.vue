@@ -115,7 +115,8 @@ export default {
 }
 
 .dropdown-button.active {
-  background-color: var(--blue);
+  /* background-color: var(--blue); */
+  background: var(--background-blue);
   color: white;
 }
 

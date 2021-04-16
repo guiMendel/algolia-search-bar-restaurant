@@ -188,7 +188,8 @@ img {
 
 .distance.close {
   color: white;
-  background-color: var(--blue);
+  background: var(--background-blue);
+  /* background-color: var(--blue); */
   font-weight: 600;
 }
 
