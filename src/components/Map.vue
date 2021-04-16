@@ -7,6 +7,8 @@
 <script>
 import { Loader } from "@googlemaps/js-api-loader"
 import mapStyle from "../resources/graphics/map_style"
+import pinSvg from "../resources/graphics/pin.svg"
+import flagSvg from "../resources/graphics/flag.svg"
 
 const mapOptions = {
   zoom: 14,
@@ -24,26 +26,67 @@ export default {
   data: () => ({
     loader: null,
     mapObject: null,
+    apiMaps: null,
+    markers: {},
   }),
+  computed: {
+    flagIcon() {
+      return {
+        url: flagSvg,
+        scaledSize: new this.apiMaps.Size(50, 50),
+        anchor: new this.apiMaps.Point(3, 50),
+      }
+    },
+    pinIcon() {
+      return {
+        url: pinSvg,
+        scaledSize: new this.apiMaps.Size(50, 50),
+        anchor: new this.apiMaps.Point(25, 50),
+      }
+    },
+  },
   methods: {
-    updateMap() {
+    async updateMap() {
       if (this.loader && this.coords) {
+        // Location slightly panned down
+        const location = {
+          lat: this.coords.latitude - 0.001,
+          lng: this.coords.longitude,
+        }
+
         if (!this.mapObject) {
-          // Load the map
-          this.loader.load().then(() => {
-            this.mapObject = new google.maps.Map(this.$refs.map, {
-              center: { lat: this.coords.latitude, lng: this.coords.longitude },
+          await this.loader.load().then(() => {
+            // Save maps api
+            this.apiMaps = google.maps
+
+            // Load the map
+            this.mapObject = new this.apiMaps.Map(this.$refs.map, {
+              center: location,
               ...mapOptions,
             })
           })
         } else {
           // Refresh the map
-          this.mapObject.panTo({
-            lat: this.coords.latitude,
-            lng: this.coords.longitude,
-          })
+          this.mapObject.panTo(location)
+          this.mapObject.setZoom(mapOptions.zoom)
         }
+
+        // Place new location marker
+        this.updateMarker("location", location, this.flagIcon)
       }
+    },
+    updateMarker(id, position, icon) {
+      // If already present, simply move
+      if (this.markers[id]) {
+        this.markers[id].setPosition(position)
+        return
+      }
+
+      this.markers[id] = new this.apiMaps.Marker({
+        position,
+        map: this.mapObject,
+        icon: icon ?? this.pinIcon,
+      })
     },
   },
   mounted() {
