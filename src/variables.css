@@ -45,8 +45,8 @@
 
   --overlay-message: linear-gradient(
     135deg,
-    rgba(39, 50, 146, 0.8) 0%,
-    rgb(29, 64, 162, 0.8) 100%
+    rgba(39, 50, 146, 0.6) 0%,
+    rgb(29, 64, 162, 0.6) 100%
   );
   /* --overlay-message: rgba(122, 122, 122, 0.7); */
 }

@@ -1,7 +1,9 @@
 <template>
   <div>
     <span class="material-icons-round">{{ icon }} </span>
-    <p class="hover-message">{{ hoverMessage }}</p>
+    <p class="hover-message" :style="hoverRight && 'left: 100%'">
+      {{ hoverMessage }}
+    </p>
   </div>
 </template>
 
@@ -11,6 +13,7 @@ export default {
   props: {
     icon: String,
     hoverMessage: String,
+    hoverRight: Boolean,
   },
 }
 </script>
@@ -62,7 +65,7 @@ div:active > span {
 
   width: max-content;
 
-  margin-right: 0.5rem;
+  margin: 0 0.5rem;
 
   padding: 0.7rem 1rem;
   border-radius: 10px;

@@ -92,9 +92,9 @@ export default {
       }`
     },
     locationIcon() {
-      if (this.useNYcoords) return "gps_off"
-      else if (this.coords) return "gps_fixed"
-      else return "gps_not_fixed"
+      if (this.useNYcoords) return "location_off"
+      else if (this.coords) return "location_on"
+      else return "fmd_bad"
     },
     mapIcon() {
       if (this.splitScreen) {
@@ -181,8 +181,8 @@ export default {
 .map {
   position: fixed;
 
-  width: 120%;
-  height: 110%;
+  width: 100%;
+  height: 100%;
 }
 
 .number-of-results {

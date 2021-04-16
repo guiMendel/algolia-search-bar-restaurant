@@ -1,8 +1,20 @@
 <template>
   <div class="map-container">
-    <div ref="map">
+    <div class="map" ref="map">
       <p class="no-map">Map requires geolocation access</p>
     </div>
+    <circle-button
+      v-if="mapObject"
+      class="refocus-button"
+      :class="{
+        active: mapCentered,
+        disabled: !coords,
+      }"
+      @click="refocusMap"
+      icon="my_location"
+      hoverMessage="Center on me"
+      hover-right
+    />
   </div>
 </template>
 
@@ -11,6 +23,7 @@ import { Loader } from "@googlemaps/js-api-loader"
 import mapStyle from "../resources/graphics/map_style"
 import pinSvg from "../resources/graphics/pin.svg"
 import flagSvg from "../resources/graphics/flag.svg"
+import CircleButton from "./CircleButton.vue"
 
 const mapOptions = {
   zoom: 15,
@@ -27,6 +40,9 @@ export default {
     coords: Object,
     pins: Array,
   },
+  components: {
+    CircleButton,
+  },
   data: () => ({
     // Reference to Loader object
     loader: null,
@@ -37,6 +53,8 @@ export default {
     markers: {},
     // Ids of pins that currently have markers on map
     activePinIds: [],
+    // Indicates whether the map is centered o the user location
+    mapCentered: true,
   }),
   computed: {
     flagIcon() {
@@ -62,23 +80,35 @@ export default {
     },
   },
   methods: {
+    refocusMap() {
+      // Refresh the map
+      this.mapObject.panTo(this.location)
+      this.mapObject.setZoom(mapOptions.zoom)
+      this.mapCentered = true
+    },
+    async createMap() {
+      await this.loader.load().then(() => {
+        // Save maps api
+        this.apiMaps = google.maps
+
+        // Load the map
+        this.mapObject = new this.apiMaps.Map(this.$refs.map, {
+          center: this.location,
+          ...mapOptions,
+        })
+
+        // Listen for events
+        this.mapObject.addListener("dragstart", () => {
+          this.mapCentered = false
+        })
+      })
+    },
     async updateMap() {
       if (this.loader && this.coords) {
         if (!this.mapObject) {
-          await this.loader.load().then(() => {
-            // Save maps api
-            this.apiMaps = google.maps
-
-            // Load the map
-            this.mapObject = new this.apiMaps.Map(this.$refs.map, {
-              center: this.location,
-              ...mapOptions,
-            })
-          })
+          await this.createMap()
         } else {
-          // Refresh the map
-          this.mapObject.panTo(this.location)
-          this.mapObject.setZoom(mapOptions.zoom)
+          this.refocusMap()
         }
 
         this.updateMarkers()
@@ -172,6 +202,7 @@ export default {
 
 <style scoped>
 .map-container {
+  position: relative;
   z-index: 50;
 
   /* default size */
@@ -183,16 +214,33 @@ export default {
   background-image: url("../resources/graphics/background_@2X.png");
 }
 
-.map-container > div {
+.map {
   width: 100%;
   height: 100%;
+}
+
+.refocus-button {
+  z-index: 100;
+
+  position: absolute;
+  bottom: 4rem;
+  left: 2rem;
+}
+
+.refocus-button.active {
+  color: var(--blue);
+}
+
+.refocus-button.disabled {
+  color: var(--light-gray);
+  background: var(--gray);
 }
 
 .no-map {
   font-size: 1.5rem;
   /* font-weight: 300; */
   color: var(--text-light);
-  
+
   width: 100%;
   height: 100%;
 
