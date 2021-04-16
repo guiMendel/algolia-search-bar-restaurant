@@ -40,6 +40,7 @@ export default {
   props: {
     coords: Object,
     pins: Array,
+    highlighted: String,
   },
   components: {
     CircleButton,
@@ -155,14 +156,14 @@ export default {
         icon: icon ?? this.pinIcon,
       })
 
-      // // Event listening
-      // this.markers[id].addListener("click", () =>
-      //   this.$emit("select-restaurant", id),
-      // )
+      // Event listening
+      this.markers[id].addListener("click", () =>
+        this.$emit("select-restaurant", id),
+      )
 
-      // this.markers[id].addListener("mouseover", () =>
-      //   this.$emit("highlight-restaurant", id),
-      // )
+      this.markers[id].addListener("mouseover", () =>
+        this.$emit("highlight-restaurant", id),
+      )
 
       // console.log(this.pins)
     },
@@ -189,6 +190,18 @@ export default {
         list.splice(index, 1)
       }
     },
+    setMarkerHighlight(id, set) {
+      if (!id) return
+      const marker = this.markers[id]
+
+      if (!marker) return
+
+      if (set) {
+        this.markers[id].setAnimation(this.apiMaps.Animation.BOUNCE)
+      } else {
+        this.markers[id].setAnimation(null)
+      }
+    },
   },
   mounted() {
     // Get google maps loader
@@ -207,6 +220,12 @@ export default {
       // Can only render markers after getting this reference
       if (this.apiMaps) {
         this.updateMarkers()
+      }
+    },
+    highlighted(newId, oldId) {
+      if (this.mapObject) {
+        this.setMarkerHighlight(newId, true)
+        this.setMarkerHighlight(oldId, false)
       }
     },
   },

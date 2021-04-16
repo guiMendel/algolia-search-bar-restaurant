@@ -8,6 +8,10 @@
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
       class="restaurant"
+      :class="{ highlighted: highlighted === restaurant.objectID }"
+      :id="`restaurant-${restaurant.objectID}`"
+      @mouseover="$emit('highlight', restaurant.objectID)"
+      @click="$emit('select', restaurant.objectID)"
     >
       <img :src="restaurant.image_url" :alt="restaurant.name" />
       <div class="details">
@@ -41,9 +45,11 @@ import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
 
 export default {
   name: "RestaurantIndex",
+  emits: ["highlight", "select"],
   props: {
     restaurants: Array,
     coords: Object,
+    highlighted: String,
   },
   components: {
     StarRating,
@@ -108,12 +114,24 @@ main {
 
   background-color: var(--color-2);
 
-  width: 80%;
+  width: 90%;
   max-width: 39rem;
+
+  padding: 1rem;
+  border-radius: 20px;
 
   text-align: flex;
 
+  cursor: pointer;
+
   animation: fade-in 200ms backwards;
+  transition: all 400ms;
+}
+
+.restaurant.highlighted {
+  filter: sepia(0.05);
+  box-shadow: 0 5px 30px 2px rgba(24, 24, 26, 0.2);
+  transform: translate(0, -5px);
 }
 
 .restaurant > .details {
@@ -189,7 +207,7 @@ img {
   .restaurant > .details {
     font-size: 1.2rem;
   }
-  
+
   /* main {
     align-self: flex-start;
     align-items: flex-start;

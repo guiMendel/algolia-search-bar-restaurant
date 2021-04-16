@@ -35,7 +35,13 @@
       </p>
 
       <!-- results -->
-      <restaurant-index :coords="coords" :restaurants="results?.hits" />
+      <restaurant-index
+        :coords="coords"
+        :restaurants="results?.hits"
+        :highlighted="highlightedRestaurant"
+        @highlight="highlightRestaurant"
+        @select="selectRestaurant"
+      />
     </div>
 
     <!-- map -->
@@ -45,6 +51,9 @@
         class="map"
         :coords="coords"
         :pins="restaurantLocations"
+        :highlighted="highlightedRestaurant"
+        @select-restaurant="selectRestaurant"
+        @highlight-restaurant="highlightRestaurant"
       />
     </transition>
 
@@ -76,6 +85,8 @@ export default {
     showMap: false,
     // Determines if screen is split between map and results
     splitScreen: window.innerWidth >= 1024,
+    highlightedRestaurant: null,
+    highlightTimeout: null,
   }),
   computed: {
     numberOfResults() {
@@ -129,6 +140,44 @@ export default {
     },
   },
   methods: {
+    selectRestaurant(id) {
+      const restaurant = document.getElementById(`restaurant-${id}`)
+      if (restaurant) {
+        // Close map, if open
+        this.showMap = false
+
+        // Wait for map to close
+        setTimeout(() => {
+          restaurant.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          })
+          this.highlightRestaurant(id, restaurant, 2000)
+        }, 100)
+      } else {
+        console.log("failed to focus element")
+      }
+    },
+    highlightRestaurant(id, reference, duration = 1000) {
+      let restaurant = reference
+
+      // If we didnt get this param
+      if (!restaurant) {
+        restaurant = document.getElementById(`restaurant-${id}`)
+        if (!restaurant) return
+      }
+
+      // Highlight this restaurant
+      this.highlightedRestaurant = id
+
+      // Set a timer to disable the highlight
+      if (this.highlightTimeout) clearInterval(this.highlightTimeout)
+
+      this.highlightTimeout = setTimeout(() => {
+        this.highlightTimeout = null
+        this.highlightedRestaurant = null
+      }, duration)
+    },
     handleResults(results) {
       this.results = results
       // console.log(results)
