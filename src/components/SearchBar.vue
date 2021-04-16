@@ -253,6 +253,15 @@ main {
   /* 
   padding-bottom: 250px;
   margin-bottom: -250px; */
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.facets::-webkit-scrollbar {
+  display: none;
 }
 
 .no-facets {
