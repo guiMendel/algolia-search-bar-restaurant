@@ -156,5 +156,15 @@ export default {
     font-size: 1.3rem;
     margin: 1.3rem 0;
   }
+
+.location-message {
+  right: 0;
+  width: max-content;
+
+  color: var(--text);
+
+  padding: 0.5rem 1rem;
+  border-radius: 20px 0 0 0;
+}
 }
 </style>
