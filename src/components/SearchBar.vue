@@ -76,6 +76,8 @@ export default {
         const stringCoords = `${this.coords.latitude}, ${this.coords.longitude}`
         // console.log(stringCoords)
         this.helper.setQueryParameter("aroundLatLng", stringCoords).search()
+      } else {
+        this.helper.setQueryParameter("aroundLatLng", "").search()
       }
     },
     // Orders refined facets first
@@ -170,7 +172,7 @@ export default {
   },
   watch: {
     input(value) {
-      if (this.coords.loading) return
+      // if (this.coords.loading) return
       this.helper.setQuery(value).search()
     },
     coords() {

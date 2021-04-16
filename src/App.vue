@@ -2,14 +2,10 @@
   <div class="container">
     <circle-button
       class="toggle-NY-coords"
-      :class="{ 'using-geolocation': !useNYcoords }"
+      :class="{ 'using-geolocation': !useNYcoords, disabled: !coords }"
       @click="useNYcoords = !useNYcoords"
-      :icon="useNYcoords ? 'gps_off' : 'gps_fixed'"
-      :hoverMessage="
-        useNYcoords
-          ? 'Simulating location from New York'
-          : 'Using real geolocation'
-      "
+      :icon="locationIcon"
+      :hoverMessage="locationHoverMessage"
     />
     <search-bar
       @result="handleResults"
@@ -22,6 +18,9 @@
       </p>
       <restaurant-index :coords="coords" :restaurants="results.hits" />
     </template>
+    <p v-if="locationMessage" class="location-message">
+      {{ locationMessage }}
+    </p>
   </div>
 </template>
 
@@ -55,6 +54,21 @@ export default {
           : this.results.processingTimeMS + " ms"
       }`
     },
+    locationIcon() {
+      if (this.useNYcoords) return "gps_off"
+      else if (this.coords) return "gps_fixed"
+      else return "gps_not_fixed"
+    },
+    locationHoverMessage() {
+      if (this.useNYcoords) return "Simulating location from New York"
+      else if (this.coords) return "Using real geolocation"
+      else return "No location access"
+    },
+    locationMessage() {
+      if (this.useNYcoords) return "Simulating location from New York"
+      else if (!this.coords) return "Failed to retrieve current location"
+      else return ""
+    },
   },
   methods: {
     handleResults(results) {
@@ -66,8 +80,8 @@ export default {
       navigator?.geolocation.getCurrentPosition(
         ({ coords: { latitude, longitude } }) =>
           (this.coords = { latitude, longitude }),
-        // On error, just log
-        console.error,
+        // On error, erase coords
+        () => (this.coords = null),
       )
     },
   },
@@ -112,9 +126,29 @@ export default {
   right: 2rem;
 }
 
-.using-geolocation {
+.toggle-NY-coords.using-geolocation {
   color: var(--light-gray);
   background: var(--button-back-blue);
+}
+
+.toggle-NY-coords.disabled {
+  color: var(--light-gray);
+  background: var(--gray);
+}
+
+.location-message {
+  position: fixed;
+  bottom: 0;
+
+  background-color: var(--color-1);
+
+  width: 100%;
+  color: var(--gray);
+  font-weight: 600;
+
+  padding: 0.5rem 0;
+
+  box-shadow: 0 0 10px 0.5px rgba(24, 24, 26, 0.2);
 }
 
 @media (min-width: 850px) {

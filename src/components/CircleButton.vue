@@ -48,11 +48,6 @@ div > span {
   transition: filter 200ms;
 }
 
-div:hover > span {
-  filter: brightness(1.3);
-  backdrop-filter: brightness(1.3);
-}
-
 div:active > span {
   filter: brightness(0.8);
   backdrop-filter: brightness(0.8);
@@ -62,6 +57,7 @@ div:active > span {
   display: none;
 
   position: absolute;
+  top: 0.25em;
   right: 100%;
 
   width: max-content;
@@ -92,7 +88,13 @@ div:active > span {
 }
 
 @media (min-width: 850px) {
-  /* only display in desktops */
+  /* only display hover effects in desktops */
+
+  div:hover > span {
+    filter: brightness(1.3);
+    backdrop-filter: brightness(1.3);
+  }
+
   div:hover > .hover-message {
     display: initial;
   }
