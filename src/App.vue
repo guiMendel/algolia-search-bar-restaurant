@@ -12,11 +12,11 @@
       :coords="coords"
       placeholder="search by name, cuisine or location"
     />
-    <Map class="map" :coords="coords" />
+    <Map class="map" :coords="coords" :pins="restaurantLocations" />
     <p class="number-of-results">
       {{ numberOfResults }}
     </p>
-    <restaurant-index :coords="coords" :restaurants="results.hits" />
+    <restaurant-index :coords="coords" :restaurants="results?.hits" />
     <p v-if="locationMessage" class="location-message">
       {{ locationMessage }}
     </p>
@@ -38,12 +38,13 @@ export default {
     Map,
   },
   data: () => ({
-    results: {},
+    results: null,
     coords: null,
     useNYcoords: false,
   }),
   computed: {
     numberOfResults() {
+      if (!this.results) return ""
       return `
           ${
             this.results.nbHits > 999
@@ -69,6 +70,15 @@ export default {
       if (this.useNYcoords) return "Simulating location from New York"
       else if (!this.coords) return "Failed to retrieve current location"
       else return ""
+    },
+    restaurantLocations() {
+      if (!this.results) return []
+      return this.results.hits.map(
+        ({ objectID: id, _geoloc: { lat, lng } }) => ({
+          id,
+          location: { lat, lng },
+        }),
+      )
     },
   },
   methods: {
