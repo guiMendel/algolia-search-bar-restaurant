@@ -100,7 +100,7 @@ main {
 
 .restaurant {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: 0.7fr 1.3fr;
 
   place-items: center;
   justify-content: center;
@@ -109,7 +109,7 @@ main {
   background-color: var(--color-2);
 
   width: 80%;
-  max-width: 50rem;
+  max-width: 39rem;
 
   text-align: flex;
 
@@ -131,7 +131,7 @@ h1 {
 
 img {
   width: 30vw;
-  max-width: 340px;
+  max-width: 207px;
 
   border-radius: 10px;
   /* border: 1px solid gray; */
@@ -187,16 +187,14 @@ img {
 
 @media (min-width: 850px) {
   .restaurant > .details {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
   }
-}
-
-@media (min-width: 850px) {
-  main {
+  
+  /* main {
     align-self: flex-start;
     align-items: flex-start;
     padding-left: 15vw;
-  }
+  } */
 }
 </style>
 

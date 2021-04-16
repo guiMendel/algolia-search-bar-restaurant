@@ -185,7 +185,7 @@ export default {
 <style scoped>
 main {
   top: 0;
-  position: sticky;
+  position: fixed;
 
   z-index: 100;
 

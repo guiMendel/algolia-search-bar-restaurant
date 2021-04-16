@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- buttons -->
     <div class="buttons">
       <circle-button
         class="toggle-NY-coords"
@@ -16,23 +17,35 @@
         hoverMessage="Show map"
       />
     </div>
+
+    <!-- search bar -->
     <search-bar
       @result="handleResults"
       :coords="coords"
       placeholder="search by name, cuisine or location"
     />
+
+    <div class="results">
+      <!-- number of results message -->
+      <p class="number-of-results">
+        {{ numberOfResults }}
+      </p>
+
+      <!-- results -->
+      <restaurant-index :coords="coords" :restaurants="results?.hits" />
+    </div>
+
+    <!-- map -->
     <transition name="slide">
       <Map
-        v-show="showMap"
+        v-show="showMap || screenWidth >= 1024"
         class="map"
         :coords="coords"
         :pins="restaurantLocations"
       />
     </transition>
-    <p class="number-of-results">
-      {{ numberOfResults }}
-    </p>
-    <restaurant-index :coords="coords" :restaurants="results?.hits" />
+
+    <!-- footer with additional messages -->
     <p v-if="locationMessage" class="location-message">
       {{ locationMessage }}
     </p>
@@ -58,6 +71,7 @@ export default {
     coords: null,
     useNYcoords: false,
     showMap: false,
+    screenWidth: window.innerWidth,
   }),
   computed: {
     numberOfResults() {
@@ -102,6 +116,7 @@ export default {
     handleResults(results) {
       this.results = results
       // console.log(results)
+      console.log(this.screenWidth)
     },
     getLocation() {
       // Get user's location
@@ -115,6 +130,11 @@ export default {
   },
   created() {
     this.getLocation()
+
+    // Listen to changes in screen width
+    window.addEventListener("resize", () => {
+      this.screenWidth = window.innerWidth
+    })
   },
   watch: {
     useNYcoords(use) {
@@ -136,10 +156,7 @@ export default {
   width: 100%;
 
   display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding-bottom: 8rem;
+  justify-content: center;
 }
 
 .map {
@@ -153,6 +170,8 @@ export default {
   margin-top: 0.5rem;
   color: var(--text-light);
   font-weight: 300;
+
+  width: max-content;
 }
 
 .buttons {
@@ -175,6 +194,17 @@ export default {
 .buttons > *.disabled {
   color: var(--light-gray);
   background: var(--gray);
+}
+
+.results {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding-top: 8rem;
+  padding-bottom: 8rem;
 }
 
 .location-message {
@@ -204,11 +234,16 @@ export default {
   transform: translate(100%);
 }
 
+@media (min-width: 650px) {
+  .results {
+    padding-top: 9rem;
+  }
+}
 @media (min-width: 850px) {
   .buttons {
     flex-direction: column-reverse;
   }
-  
+
   .number-of-results {
     font-size: 1.3rem;
     margin: 1.3rem 0;
@@ -222,6 +257,24 @@ export default {
 
     padding: 0.5rem 1rem;
     border-radius: 20px 0 0 0;
+  }
+}
+
+@media (min-width: 850px) {
+  .map {
+    z-index: 5;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+
+    width: 100%;
+  }
+
+  .results {
+    z-index: 10;
+
+    min-width: 38rem;
+    box-shadow: 0 0 80px 50px rgba(24, 24, 26, 0.1);
   }
 }
 </style>
