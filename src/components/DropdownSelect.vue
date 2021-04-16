@@ -93,7 +93,8 @@ export default {
   border-radius: 30px;
 
   color: var(--text-light);
-  background-color: white;
+  /* background-color: white; */
+  background: var(--background);
 
   box-sizing: border-box;
 

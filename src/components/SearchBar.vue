@@ -199,7 +199,8 @@ main {
 
   gap: 0.5rem;
 
-  background-color: white;
+  /* background-color: white; */
+  background: var(--background);
 
   box-shadow: 0 1px 200px 20px rgba(24, 24, 26, 0.2);
 
