@@ -12,12 +12,11 @@
       :coords="coords"
       placeholder="search by name, cuisine or location"
     />
-    <template v-if="results.hits">
-      <p class="number-of-results">
-        {{ numberOfResults }}
-      </p>
-      <restaurant-index :coords="coords" :restaurants="results.hits" />
-    </template>
+    <Map class="map" :coords="coords" />
+    <p class="number-of-results">
+      {{ numberOfResults }}
+    </p>
+    <restaurant-index :coords="coords" :restaurants="results.hits" />
     <p v-if="locationMessage" class="location-message">
       {{ locationMessage }}
     </p>
@@ -27,6 +26,7 @@
 <script>
 import CircleButton from "./components/CircleButton.vue"
 import SearchBar from "./components/SearchBar.vue"
+import Map from "./components/Map.vue"
 import RestaurantIndex from "./views/RestaurantIndex.vue"
 
 export default {
@@ -35,6 +35,7 @@ export default {
     RestaurantIndex,
     SearchBar,
     CircleButton,
+    Map,
   },
   data: () => ({
     results: {},
@@ -114,6 +115,13 @@ export default {
   padding-bottom: 8rem;
 }
 
+.map {
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+}
+
 .number-of-results {
   margin-top: 0.5rem;
   color: var(--text-light);
@@ -121,6 +129,8 @@ export default {
 }
 
 .toggle-NY-coords {
+  z-index: 100;
+
   position: fixed;
   bottom: 4rem;
   right: 2rem;
@@ -137,6 +147,8 @@ export default {
 }
 
 .location-message {
+  z-index: 100;
+
   position: fixed;
   bottom: 0;
 
@@ -157,14 +169,14 @@ export default {
     margin: 1.3rem 0;
   }
 
-.location-message {
-  right: 0;
-  width: max-content;
+  .location-message {
+    right: 0;
+    width: max-content;
 
-  color: var(--text);
+    color: var(--text);
 
-  padding: 0.5rem 1rem;
-  border-radius: 20px 0 0 0;
-}
+    padding: 0.5rem 1rem;
+    border-radius: 20px 0 0 0;
+  }
 }
 </style>

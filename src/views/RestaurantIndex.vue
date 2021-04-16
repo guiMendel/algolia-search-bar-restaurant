@@ -1,8 +1,7 @@
 <template>
   <main>
-    <!-- <div v-if="coords" id="map" ref="map"></div> -->
-    <loading v-if="restaurants.length == 0" :active="loading" />
-    <p v-if="restaurants.length == 0 && !loading" class="no-match">
+    <loading v-if="!restaurants?.length" :active="loading" />
+    <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
     <div
@@ -38,7 +37,6 @@
 <script>
 import Loading from "vue3-loading-overlay"
 import StarRating from "../components/StarRating.vue"
-// import { Loader } from "@googlemaps/js-api-loader"
 import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
 
 export default {
@@ -78,21 +76,6 @@ export default {
   mounted() {
     // console.log(this.restaurants[0]);
     setTimeout(() => (this.loading = false), 2000)
-
-    // console.log(this.restaurants[0])
-
-    // const loader = new Loader({
-    //   apiKey: import.meta.env.VITE_GOOGLE_API_KEY,
-    //   version: "weekly",
-    // })
-
-    // let map = this.$refs.map
-    // loader.load().then(() => {
-    //   map = new google.maps.Map(map, {
-    //     center: { lat: -34.397, lng: 150.644 },
-    //     zoom: 8,
-    //   })
-    // })
   },
   watch: {
     coords() {
@@ -104,11 +87,6 @@ export default {
 </script>
 
 <style scoped>
-/* #map {
-  width: 400px;
-  height: 400px;
-} */
-
 main {
   font-size: 1.2rem;
 
