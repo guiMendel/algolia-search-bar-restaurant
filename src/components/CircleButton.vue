@@ -88,8 +88,11 @@ div:active > span {
 }
 
 @media (min-width: 850px) {
-  /* only display hover effects in desktops */
+  div {
+    font-size: 2.2em;
+  }
 
+  /* only display hover effects in desktops */
   div:hover > span {
     filter: brightness(1.3);
     backdrop-filter: brightness(1.3);
