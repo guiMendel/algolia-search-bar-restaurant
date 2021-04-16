@@ -2,8 +2,14 @@
   <div class="container">
     <circle-button
       class="toggle-NY-coords"
+      :class="{ 'using-geolocation': !useNYcoords }"
       @click="useNYcoords = !useNYcoords"
       :icon="useNYcoords ? 'gps_off' : 'gps_fixed'"
+      :hoverMessage="
+        useNYcoords
+          ? 'Simulating location from New York'
+          : 'Using real geolocation'
+      "
     />
     <search-bar
       @result="handleResults"
@@ -106,19 +112,15 @@ export default {
   right: 2rem;
 }
 
+.using-geolocation {
+  color: var(--light-gray);
+  background: var(--button-back-blue);
+}
+
 @media (min-width: 850px) {
   .number-of-results {
     font-size: 1.3rem;
     margin: 1.3rem 0;
-  }
-
-  .toggle-NY-coords {
-    color: var(--light-gray);
-    background: radial-gradient(
-      circle,
-      rgba(39, 50, 146, 1) 0%,
-      rgba(18, 26, 97, 1) 100%
-    );
   }
 }
 </style>

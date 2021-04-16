@@ -1,5 +1,8 @@
 <template>
-  <span class="material-icons-round">{{ icon }}</span>
+  <div>
+    <p class="hover-message">{{ hoverMessage }}</p>
+    <span class="material-icons-round">{{ icon }} </span>
+  </div>
 </template>
 
 <script>
@@ -13,17 +16,14 @@ export default {
 </script>
 
 <style scoped>
-span {
+div {
+  position: relative;
   z-index: 50;
-  
+
   font-size: 2em;
 
   width: 2em;
   height: 2em;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
   cursor: pointer;
 
@@ -32,15 +32,69 @@ span {
   /* color: var(--text); */
 
   box-shadow: 0 5px 10px 1px rgba(24, 24, 26, 0.2);
+}
+
+div > span {
+  font-size: 1em;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
 
   transition: filter 200ms;
 }
 
-span:hover {
+div:hover > span {
   filter: brightness(1.3);
+  backdrop-filter: brightness(1.3);
 }
 
-span:active {
-  filter: brightness(0.95);
+div:active > span {
+  filter: brightness(0.8);
+  backdrop-filter: brightness(0.8);
+}
+
+.hover-message {
+  display: none;
+
+  position: absolute;
+  right: 100%;
+
+  width: max-content;
+
+  margin-right: 0.5rem;
+
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+
+  background: var(--overlay-message);
+  backdrop-filter: blur(2px);
+  color: white;
+
+  font-family: "Source Sans Pro", Helvetica, Arial, sans-serif;
+  font-size: 1.5rem;
+
+  animation: fade-in 150ms backwards;
+  animation-delay: 200ms;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (min-width: 850px) {
+  /* only display in desktops */
+  div:hover > .hover-message {
+    display: initial;
+  }
 }
 </style>
