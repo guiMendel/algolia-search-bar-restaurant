@@ -11,10 +11,13 @@
       />
       <circle-button
         class="toggle-map"
-        :class="{ active: showMap, disabled: !showMap && !coords }"
+        :class="{
+          active: showMap && !splitScreen,
+          disabled: !showMap && !coords,
+        }"
         @click="showMap = coords && !showMap"
-        icon="map"
-        hoverMessage="Show map"
+        :icon="mapIcon"
+        :hoverMessage="mapHoverMessage"
       />
     </div>
 
@@ -25,7 +28,7 @@
       placeholder="search by name, cuisine or location"
     />
 
-    <div class="results">
+    <div class="results" :class="{ hide: splitScreen && showMap }">
       <!-- number of results message -->
       <p class="number-of-results">
         {{ numberOfResults }}
@@ -38,7 +41,7 @@
     <!-- map -->
     <transition name="slide">
       <Map
-        v-show="showMap || screenWidth >= 1024"
+        v-show="showMap || splitScreen"
         class="map"
         :coords="coords"
         :pins="restaurantLocations"
@@ -71,7 +74,8 @@ export default {
     coords: null,
     useNYcoords: false,
     showMap: false,
-    screenWidth: window.innerWidth,
+    // Determines if screen is split between map and results
+    splitScreen: window.innerWidth >= 1024,
   }),
   computed: {
     numberOfResults() {
@@ -91,6 +95,18 @@ export default {
       if (this.useNYcoords) return "gps_off"
       else if (this.coords) return "gps_fixed"
       else return "gps_not_fixed"
+    },
+    mapIcon() {
+      if (this.splitScreen) {
+        if (this.showMap) return "close_fullscreen"
+        else return "open_in_full"
+      } else return "map"
+    },
+    mapHoverMessage() {
+      if (this.splitScreen) {
+        if (this.showMap) return "Condense map"
+        else return "Expand map"
+      } else return "Show map"
     },
     locationHoverMessage() {
       if (this.useNYcoords) return "Simulating location from New York"
@@ -116,7 +132,6 @@ export default {
     handleResults(results) {
       this.results = results
       // console.log(results)
-      console.log(this.screenWidth)
     },
     getLocation() {
       // Get user's location
@@ -127,13 +142,17 @@ export default {
         () => (this.coords = null),
       )
     },
+    setSplitScreen() {
+      this.splitScreen = window.innerWidth >= 1024
+    },
   },
   created() {
     this.getLocation()
 
+    this.setSplitScreen()
     // Listen to changes in screen width
     window.addEventListener("resize", () => {
-      this.screenWidth = window.innerWidth
+      this.setSplitScreen()
     })
   },
   watch: {
@@ -205,6 +224,10 @@ export default {
 
   padding-top: 8rem;
   padding-bottom: 8rem;
+}
+
+.results.hide {
+  display: none;
 }
 
 .location-message {

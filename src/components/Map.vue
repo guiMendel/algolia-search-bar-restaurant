@@ -1,6 +1,8 @@
 <template>
   <div class="map-container">
-    <div ref="map"></div>
+    <div ref="map">
+      <p class="no-map">Map requires geolocation access</p>
+    </div>
   </div>
 </template>
 
@@ -178,11 +180,26 @@ export default {
 
   /* default color */
   /* background-color: gray; */
-  background-image: url('../resources/graphics/background_@2X.png');
+  background-image: url("../resources/graphics/background_@2X.png");
 }
 
 .map-container > div {
   width: 100%;
   height: 100%;
+}
+
+.no-map {
+  font-size: 1.5rem;
+  /* font-weight: 300; */
+  color: var(--text-light);
+  
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+
+  padding: 0 0 2rem 2rem;
 }
 </style>
