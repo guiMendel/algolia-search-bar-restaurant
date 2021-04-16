@@ -122,7 +122,7 @@ export default {
 
 .toggle-NY-coords {
   position: fixed;
-  bottom: 3rem;
+  bottom: 4rem;
   right: 2rem;
 }
 
@@ -140,7 +140,7 @@ export default {
   position: fixed;
   bottom: 0;
 
-  background-color: var(--color-1);
+  background: var(--background);
 
   width: 100%;
   color: var(--gray);
