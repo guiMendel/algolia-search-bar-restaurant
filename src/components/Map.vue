@@ -36,6 +36,7 @@ const mapOptions = {
 
 export default {
   name: "Map",
+  emits: ["select-restaurant", "highlight-restaurant"],
   props: {
     coords: Object,
     pins: Array,
@@ -81,10 +82,12 @@ export default {
   },
   methods: {
     refocusMap() {
-      // Refresh the map
-      this.mapObject.panTo(this.location)
-      this.mapObject.setZoom(mapOptions.zoom)
-      this.mapCentered = true
+      if (this.location) {
+        // Refresh the map
+        this.mapObject.panTo(this.location)
+        this.mapObject.setZoom(mapOptions.zoom)
+        this.mapCentered = true
+      }
     },
     async createMap() {
       await this.loader.load().then(() => {
@@ -151,6 +154,16 @@ export default {
         map: this.mapObject,
         icon: icon ?? this.pinIcon,
       })
+
+      // // Event listening
+      // this.markers[id].addListener("click", () =>
+      //   this.$emit("select-restaurant", id),
+      // )
+
+      // this.markers[id].addListener("mouseover", () =>
+      //   this.$emit("highlight-restaurant", id),
+      // )
+
       // console.log(this.pins)
     },
     removeMarker(id) {
