@@ -1,18 +1,34 @@
 <template>
   <div class="container">
-    <circle-button
-      class="toggle-NY-coords"
-      :class="{ 'using-geolocation': !useNYcoords, disabled: !coords }"
-      @click="useNYcoords = !useNYcoords"
-      :icon="locationIcon"
-      :hoverMessage="locationHoverMessage"
-    />
+    <div class="buttons">
+      <circle-button
+        class="toggle-NY-coords"
+        :class="{ active: !useNYcoords, disabled: !coords }"
+        @click="useNYcoords = !useNYcoords"
+        :icon="locationIcon"
+        :hoverMessage="locationHoverMessage"
+      />
+      <circle-button
+        class="toggle-map"
+        :class="{ active: showMap, disabled: !showMap && !coords }"
+        @click="showMap = coords && !showMap"
+        icon="map"
+        hoverMessage="Show map"
+      />
+    </div>
     <search-bar
       @result="handleResults"
       :coords="coords"
       placeholder="search by name, cuisine or location"
     />
-    <Map class="map" :coords="coords" :pins="restaurantLocations" />
+    <transition name="slide">
+      <Map
+        v-show="showMap"
+        class="map"
+        :coords="coords"
+        :pins="restaurantLocations"
+      />
+    </transition>
     <p class="number-of-results">
       {{ numberOfResults }}
     </p>
@@ -41,6 +57,7 @@ export default {
     results: null,
     coords: null,
     useNYcoords: false,
+    showMap: false,
   }),
   computed: {
     numberOfResults() {
@@ -104,7 +121,7 @@ export default {
       if (use) {
         this.coords = {
           latitude: 40.71,
-          longitude: -74.01,
+          longitude: -74.012,
         }
       } else {
         this.getLocation()
@@ -128,8 +145,8 @@ export default {
 .map {
   position: fixed;
 
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 110%;
 }
 
 .number-of-results {
@@ -138,20 +155,24 @@ export default {
   font-weight: 300;
 }
 
-.toggle-NY-coords {
+.buttons {
   z-index: 100;
+
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 1.5rem;
 
   position: fixed;
   bottom: 4rem;
   right: 2rem;
 }
 
-.toggle-NY-coords.using-geolocation {
-  color: var(--light-gray);
-  background: var(--button-back-blue);
+.buttons > *.active {
+  color: var(--blue);
 }
 
-.toggle-NY-coords.disabled {
+.buttons > *.disabled {
   color: var(--light-gray);
   background: var(--gray);
 }
@@ -171,6 +192,16 @@ export default {
   padding: 0.5rem 0;
 
   box-shadow: 0 0 10px 0.5px rgba(24, 24, 26, 0.2);
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 300ms ease-out;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translate(100%);
 }
 
 @media (min-width: 850px) {

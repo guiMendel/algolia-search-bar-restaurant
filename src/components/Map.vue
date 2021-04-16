@@ -16,6 +16,7 @@ const mapOptions = {
   disableDefaultUI: true,
   maxZoom: 17,
   minZoom: 13,
+  gestureHandling: "greedy",
 }
 
 export default {
@@ -51,8 +52,9 @@ export default {
       }
     },
     location() {
+      if (!this.coords) return null
       return {
-        lat: this.coords.latitude - 0.001,
+        lat: this.coords.latitude,
         lng: this.coords.longitude,
       }
     },
@@ -81,8 +83,8 @@ export default {
       }
     },
     updateMarkers() {
-      // Update location marker
-      this.setMarker("location", this.location, this.flagIcon)
+      // Update user's location marker
+      this.updateLocationMarker()
 
       // After updating the new pins, this will hold the ids of pins which are no longer to have markers
       const previousPinIds = [...this.activePinIds]
@@ -102,9 +104,7 @@ export default {
 
       // Delete inactive pins
       for (const inactivePinId of previousPinIds) {
-        this.markers[inactivePinId].setVisible(false)
-        this.markers[inactivePinId].setMap(null)
-        delete this.markers[inactivePinId]
+        this.removeMarker(inactivePinId)
       }
     },
     setMarker(id, position, icon) {
@@ -120,6 +120,18 @@ export default {
         icon: icon ?? this.pinIcon,
       })
       // console.log(this.pins)
+    },
+    removeMarker(id) {
+      this.markers[id].setVisible(false)
+      this.markers[id].setMap(null)
+      delete this.markers[id]
+    },
+    updateLocationMarker() {
+      if (this.location) {
+        this.setMarker("location", this.location, this.flagIcon)
+      } else {
+        this.removeMarker("location")
+      }
     },
     // Pops an item from a list if it is present
     removeIfPresent(list, item) {
