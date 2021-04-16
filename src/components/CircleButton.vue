@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p class="hover-message">{{ hoverMessage }}</p>
     <span class="material-icons-round">{{ icon }} </span>
+    <p class="hover-message">{{ hoverMessage }}</p>
   </div>
 </template>
 
@@ -57,7 +57,7 @@ div:active > span {
   display: none;
 
   position: absolute;
-  top: 0.25em;
+  top: 0.35em;
   right: 100%;
 
   width: max-content;
@@ -98,7 +98,7 @@ div:active > span {
     backdrop-filter: brightness(1.3);
   }
 
-  div:hover > .hover-message {
+  span:hover + .hover-message {
     display: initial;
   }
 }

@@ -159,7 +159,7 @@ export default {
   z-index: 100;
 
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
   gap: 1.5rem;
 
@@ -205,6 +205,10 @@ export default {
 }
 
 @media (min-width: 850px) {
+  .buttons {
+    flex-direction: column-reverse;
+  }
+  
   .number-of-results {
     font-size: 1.3rem;
     margin: 1.3rem 0;

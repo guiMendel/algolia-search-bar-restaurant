@@ -177,7 +177,8 @@ export default {
   height: 200px;
 
   /* default color */
-  background-color: gray;
+  /* background-color: gray; */
+  background-image: url('../resources/graphics/background_@2X.png');
 }
 
 .map-container > div {
