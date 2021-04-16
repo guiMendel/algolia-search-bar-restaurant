@@ -25,7 +25,7 @@ span {
 
   cursor: pointer;
 
-  background: var(--background);
+  background: var(--button-back);
   border-radius: 50%;
   /* color: var(--text); */
 

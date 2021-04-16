@@ -119,7 +119,8 @@ export default {
   right: -1rem;
 
   padding: 0.5rem;
-  background-color: var(--blue);
+  /* background-color: var(--blue); */
+  background: var(--button-back-blue);
   color: white;
   border-radius: 50%;
 
@@ -127,11 +128,12 @@ export default {
 
   cursor: pointer;
 
-  transition: background 70ms;
+  transition: filter 170ms;
 }
 
 .close:hover {
-  background-color: var(--vibrant-blue);
+  /* background-color: var(--vibrant-blue); */
+  filter: brightness(1.3);
 }
 
 .list,

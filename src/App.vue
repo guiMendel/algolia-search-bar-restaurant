@@ -111,5 +111,14 @@ export default {
     font-size: 1.3rem;
     margin: 1.3rem 0;
   }
+
+  .toggle-NY-coords {
+    color: var(--light-gray);
+    background: radial-gradient(
+      circle,
+      rgba(39, 50, 146, 1) 0%,
+      rgba(18, 26, 97, 1) 100%
+    );
+  }
 }
 </style>
