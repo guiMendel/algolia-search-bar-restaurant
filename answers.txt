@@ -14,3 +14,111 @@ https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/
 
 3
 I have great news for you - we take pride in how simple Algolia is to set up and use!
+
+======================================================================================
+
+Question 1: Hello,
+
+I'm new to search engines, and there are a lot of concepts I'm not educated on. To make my onboarding smoother, it'd help if you could provide me with some definitions of the following concepts:
+
+Records
+Indexing
+I'm also struggling with understanding what types of metrics would be useful to include in the "Custom Ranking."
+
+Cheers, George
+
+----------------------------------ANSWER----------------------------------
+
+Hi George!
+
+Thanks for reaching out to us! I'm really glad you took interest in our search engine!
+It might seem complex at first, but I'm sure you'll get the gist of all these terms very soon.
+
+Responding your questions:
+
+Records are simply the individual pieces of data people are actually searching for.
+When you provide us with a dataset, you provide a collection of records, and each record is a set of key-value pairs called attributes.
+To put it simply, a dataset is comprised of records, which are in turn comprised of attributes.
+
+Here's our documentation on them:
+https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/#algolia-records
+
+Indexing, on the other hand, refers to the handling (creating, updating, etc.) of indices.
+But what is an index, I hear you ask? Indices are collections of records! They're what we were so far calling datasets. We separate your data in different indices so that you don't mix your cats with your dogs.
+
+You can find a more detailed explanation in our docs:
+https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/#algolia-index
+
+Now when it comes to understanding which metrics work best for your custom ranking, I'd say the answer is whichever metrics will get your customers happier faster. It depends on your business metrics.
+Let's say your client is searching for shirts: should you present your shirts sorted by color or by popularity?
+This is where your records' attributes come into play: leverage first the attributes that will draw in and keep your customers' attention. And always assume they're in a hurry for their lives.
+
+Check out our documentation for more insight into this:
+https://www.algolia.com/doc/guides/managing-results/must-do/custom-ranking/#custom-ranking
+
+Thanks again for sending us this question. I'll be happy to help if you ever have any others!
+Have an awesome weekend!
+
+- Gui Mendel
+
+======================================================================================
+
+Question 2: Hello,
+
+Sorry to give you the kind of feedback that I know you do not want to hear, but I really hate the new dashboard design. Clearing and deleting indices are now several clicks away. I am needing to use these features while iterating, so this is inconvenient.
+
+Regards, Matt
+
+----------------------------------ANSWER----------------------------------
+
+Hi Matt!
+
+I'm really sorry you're not having a good experience with our new interface. I understand your frustration, as it really turns out to be a big inconvenience in your situation.
+
+But as a matter of fact, negative is our favorite type of feedback! It's the kind of contribution that sends us back in the right direction. You can rest assured I have made your case to the team, and we will be looking into the matter with great care.
+
+I'm sure you're not the only one who shares this opinion, so we all owe you big thanks for bringing it to our attention!
+I wish you a great weekend!
+
+- Gui Mendel
+
+======================================================================================
+
+Question 3: Hi,
+
+I'm looking to integrate Algolia in my website. Will this be a lot of development work for me? What's the high level process look like?
+
+Regards, Leo
+
+----------------------------------ANSWER----------------------------------
+
+Hi Leo!
+
+We are thrilled to have caught your interest! I'm sure you will love your experience with our services.
+
+In fact, I have great news for you - we take much pride in how simple Algolia is to set up and use!
+The high level proccess can be broken down to only 3 steps.
+
+Check out our documentation later for a more in-depth explanation:
+https://www.algolia.com/doc/guides/getting-started/how-algolia-works/
+
+You can perform any but the last of them either using our online dashboard or via our api, which has integrations with many, many languages. You can check out the full list in our documentation.
+
+First and foremost, you have to send us your data in a format our engine understands. That's really all it takes to set up our service! You'll be able to immediately start testing away the search functionality.
+
+Then, you'll be able to configure the relevance and ranking settings of your data to ensure our engine functionality is aligned with your business metrics. All while being able to immediately test the new searching experience.
+
+I'm sure you will also want your clients to have access to this experience though, so the last thing you'll need is to actually set up a search user interface. Thankfully, this proccess is made incredibly easy by our family of UI/UX libraries, called InstantSearch.
+It will provide you with all the UI components you need to have your customers wowing in no time.
+
+To sum it all up, here's what you will be doing:
+1 - Index your data into Algolia
+2 - Configure relevance and ranking settings
+3 - Build a search user interface
+
+And count on me to aid and support you throughout the whole proccess. We are here to help you, always!
+
+Thank you again for your interest in our services! Please send me a message if you still have any questions.
+Have an amazing weekend!
+
+- Gui Mendel
