@@ -15,7 +15,7 @@
           active: showMap && !splitScreen,
           disabled: !showMap && !coords,
         }"
-        @click="showMap = coords && !showMap"
+        @click="toggleMap(!showMap)"
         :icon="mapIcon"
         :hoverMessage="mapHoverMessage"
       />
@@ -31,7 +31,11 @@
 
     <!-- map -->
     <transition name="slide">
-      <Map v-show="showMap || splitScreen" class="map" />
+      <Map
+        v-show="showMap || splitScreen"
+        class="map"
+        @open="!splitScreen && toggleMap(true)"
+      />
     </transition>
 
     <!-- footer with additional messages -->
@@ -98,6 +102,10 @@ export default {
     setSplitScreen() {
       this.splitScreen = window.innerWidth >= 1024
     },
+    toggleMap(open) {
+      // Only open if there are coords, but can always close
+      this.showMap = this.coords && open
+    },
   },
   created() {
     // Get user location
@@ -109,10 +117,10 @@ export default {
     // Listen to changes in screen width
     window.addEventListener("resize", () => this.setSplitScreen())
 
-    // Close map when a restaurant is selected
+    // Close map when a restaurant is selected from the map
     this.$store.commit(
       "subscribeToRestaurantSelection",
-      () => (this.showMap = false),
+      (_, selector) => selector === "marker" && (this.showMap = false),
     )
   },
   watch: {

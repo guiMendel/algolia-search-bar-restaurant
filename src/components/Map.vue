@@ -37,6 +37,7 @@ const mapOptions = {
 
 export default {
   name: "Map",
+  emits: ["open"],
   components: {
     CircleButton,
   },
@@ -221,6 +222,16 @@ export default {
         this.markers[id].setAnimation(null)
       }
     },
+    focusOnRestaurant(restaurantId) {
+      // Prevent focusing on inexistent stuff
+      if (!this.mapObject || !this.markers[restaurantId]) return
+
+      // Open map, if closed
+      this.$emit("open")
+
+      // Pan to selected restaurant
+      this.mapObject.panTo(this.markers[restaurantId].position)
+    },
   },
   mounted() {
     // Get google maps loader
@@ -230,6 +241,13 @@ export default {
     })
 
     this.updateMap()
+
+    // Open map when a restaurant is selected from the index
+    this.$store.commit(
+      "subscribeToRestaurantSelection",
+      (restaurantId, selector) =>
+        selector === "index" && this.focusOnRestaurant(restaurantId),
+    )
   },
   watch: {
     coords() {
