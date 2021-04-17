@@ -20,6 +20,7 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader"
+import { mapGetters } from "vuex"
 import mapStyle from "../resources/graphics/map_style"
 import pinSvg from "../resources/graphics/pin.svg"
 import flagSvg from "../resources/graphics/flag.svg"
@@ -39,7 +40,6 @@ export default {
   emits: ["select-restaurant", "highlight-restaurant"],
   props: {
     coords: Object,
-    pins: Array,
     highlighted: String,
   },
   components: {
@@ -59,6 +59,7 @@ export default {
     mapCentered: true,
   }),
   computed: {
+    ...mapGetters(["restaurants"]),
     flagIcon() {
       return {
         url: flagSvg,
@@ -79,6 +80,15 @@ export default {
         lat: this.coords.latitude,
         lng: this.coords.longitude,
       }
+    },
+    restaurantLocations() {
+      if (!this.restaurants) return []
+      return this.restaurants.map(
+        ({ objectID: id, _geoloc: { lat, lng } }) => ({
+          id,
+          location: { lat, lng },
+        }),
+      )
     },
   },
   methods: {
@@ -126,8 +136,10 @@ export default {
       const previousPinIds = [...this.activePinIds]
       this.activePinIds = []
 
+      // console.log(this.restaurantLocations)
+
       // Update pins
-      for (const pin of this.pins) {
+      for (const pin of this.restaurantLocations) {
         // Since this pin will have a marker, we withdraw it from the remove list
         this.removeIfPresent(previousPinIds, pin.id)
 
@@ -228,7 +240,7 @@ export default {
     coords() {
       this.updateMap()
     },
-    pins() {
+    restaurants() {
       // Can only render markers after getting this reference
       if (this.apiMaps) {
         this.updateMarkers()

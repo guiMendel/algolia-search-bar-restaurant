@@ -40,7 +40,6 @@ import DropdownSelect from "./DropdownSelect.vue"
 
 export default {
   name: "SearchBar",
-  emits: ["result"],
   props: {
     placeholder: String,
     coords: Object,
@@ -67,7 +66,10 @@ export default {
     this.helper.on("result", this.onResult)
 
     // Be ready for page resets
-    this.helper.on("change", ({ isPageReset }) => isPageReset && this.resetPage())
+    this.helper.on(
+      "change",
+      ({ isPageReset }) => isPageReset && this.resetPage(),
+    )
 
     // If we already have coords, use them
     this.updateGeolocation()
@@ -76,7 +78,7 @@ export default {
     this.helper.search()
   },
   methods: {
-    ...mapMutations(["resetPage"]),
+    ...mapMutations(["resetPage", "setResults"]),
     updateGeolocation() {
       // Activate geolocation
       if (this.coords) {
@@ -105,8 +107,8 @@ export default {
       this.currentlyOpenFacetMenu = state ? facet : null
     },
     onResult(event) {
-      // Will transmit results to parent
-      this.$emit("result", event.results)
+      // Update store
+      this.setResults(event.results)
 
       // Update facet lists
       this.updateFacets(event.results)
@@ -188,7 +190,7 @@ export default {
     },
     page(newPage) {
       this.helper.setPage(newPage).search()
-      console.log(newPage)
+      // console.log(newPage)
     },
   },
 }

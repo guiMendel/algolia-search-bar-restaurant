@@ -23,21 +23,14 @@
 
     <!-- search bar -->
     <search-bar
-      @result="handleResults"
       :coords="coords"
       placeholder="search by name, cuisine or location"
     />
 
     <div class="results" :class="{ hide: splitScreen && showMap }">
-      <!-- number of results message -->
-      <p class="number-of-results">
-        {{ numberOfResults }}
-      </p>
-
       <!-- results -->
       <restaurant-index
         :coords="coords"
-        :restaurants="results?.hits"
         :highlighted="highlightedRestaurant"
         @highlight="highlightRestaurant"
         @select="selectRestaurant"
@@ -50,7 +43,6 @@
         v-show="showMap || splitScreen"
         class="map"
         :coords="coords"
-        :pins="restaurantLocations"
         :highlighted="highlightedRestaurant"
         @select-restaurant="selectRestaurant"
         @highlight-restaurant="highlightRestaurant"
@@ -79,7 +71,6 @@ export default {
     Map,
   },
   data: () => ({
-    results: null,
     coords: null,
     useNYcoords: false,
     showMap: false,
@@ -89,19 +80,6 @@ export default {
     highlightTimeout: null,
   }),
   computed: {
-    numberOfResults() {
-      if (!this.results) return ""
-      return `
-          ${
-            this.results.nbHits > 999
-              ? Math.round(this.results.nbHits / 1000) + "k"
-              : this.results.nbHits
-          } ${this.results.nbHits > 1 ? "results" : "result"} found in ${
-        this.results.processingTimeMS > 99
-          ? this.results.processingTimeMS / 1000.0 + " s"
-          : this.results.processingTimeMS + " ms"
-      }`
-    },
     locationIcon() {
       if (this.useNYcoords) return "location_off"
       else if (this.coords) return "location_on"
@@ -128,15 +106,6 @@ export default {
       if (this.useNYcoords) return "Simulating location from New York"
       else if (!this.coords) return "Failed to retrieve current location"
       else return ""
-    },
-    restaurantLocations() {
-      if (!this.results) return []
-      return this.results.hits.map(
-        ({ objectID: id, _geoloc: { lat, lng } }) => ({
-          id,
-          location: { lat, lng },
-        }),
-      )
     },
   },
   methods: {
@@ -177,10 +146,6 @@ export default {
         this.highlightTimeout = null
         this.highlightedRestaurant = null
       }, duration)
-    },
-    handleResults(results) {
-      this.results = results
-      // console.log(results)
     },
     getLocation() {
       // Get user's location
@@ -234,14 +199,6 @@ export default {
   height: 100%;
 }
 
-.number-of-results {
-  margin-top: 0.5rem;
-  color: var(--text-light);
-  font-weight: 300;
-
-  width: max-content;
-}
-
 .buttons {
   z-index: 100;
 
@@ -266,10 +223,10 @@ export default {
 
 .results {
   width: 100%;
-
+/* 
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center; */
 
   padding-top: 8rem;
   padding-bottom: 8rem;
@@ -314,11 +271,6 @@ export default {
 @media (min-width: 850px) {
   .buttons {
     flex-direction: column-reverse;
-  }
-
-  .number-of-results {
-    font-size: 1.3rem;
-    margin: 1.3rem 0;
   }
 
   .location-message {

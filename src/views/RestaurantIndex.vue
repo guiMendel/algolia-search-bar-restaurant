@@ -1,10 +1,21 @@
 <template>
   <main>
+    <!-- loading spin -->
     <loading v-if="!restaurants?.length" :active="loading" />
+
+    <!-- number of results message -->
+    <p class="number-of-results">
+      {{ numberOfResults }}
+    </p>
+
+    <!-- "no matches" message -->
     <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
+
     <pagination-control ref="top-page-control" />
+
+    <!-- restaurants -->
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -36,6 +47,7 @@
         >
       </div>
     </div>
+
     <pagination-control v-if="restaurants?.length" />
   </main>
 </template>
@@ -45,13 +57,12 @@ import Loading from "vue3-loading-overlay"
 import StarRating from "../components/StarRating.vue"
 import PaginationControl from "../components/PaginationControl.vue"
 import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
-import { mapState } from "vuex"
+import { mapState, mapGetters } from "vuex"
 
 export default {
   name: "RestaurantIndex",
   emits: ["highlight", "select"],
   props: {
-    restaurants: Array,
     coords: Object,
     highlighted: String,
   },
@@ -64,7 +75,23 @@ export default {
     restaurantDistances: {},
     loading: true,
   }),
-  computed: mapState(["page"]),
+  computed: {
+    ...mapState(["page", "results"]),
+    ...mapGetters(["restaurants"]),
+    numberOfResults() {
+      if (!this.results) return ""
+      return `
+          ${
+            this.results.nbHits > 999
+              ? Math.round(this.results.nbHits / 1000) + "k"
+              : this.results.nbHits
+          } ${this.results.nbHits > 1 ? "results" : "result"} found in ${
+        this.results.processingTimeMS > 99
+          ? this.results.processingTimeMS / 1000.0 + " s"
+          : this.results.processingTimeMS + " ms"
+      }`
+    },
+  },
   methods: {
     restaurantDistance({ _geoloc: geolocation, objectID }) {
       // Check cache
@@ -95,7 +122,10 @@ export default {
       this.restaurantDistances = {}
     },
     page() {
-      this.$refs["top-page-control"].$el.scrollIntoView({ behavior: 'smooth', block: 'center'})
+      this.$refs["top-page-control"].$el.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      })
     },
   },
 }
@@ -111,6 +141,14 @@ main {
   gap: 3rem;
 
   padding: 2rem 1rem 1rem;
+}
+
+.number-of-results {
+  margin-top: 0.5rem;
+  color: var(--text-light);
+  font-weight: 300;
+
+  width: max-content;
 }
 
 .restaurant {
@@ -213,6 +251,11 @@ img {
 }
 
 @media (min-width: 850px) {
+  .number-of-results {
+    font-size: 1.3rem;
+    margin: 1.3rem 0;
+  }
+
   .restaurant > .details {
     font-size: 1.2rem;
   }
