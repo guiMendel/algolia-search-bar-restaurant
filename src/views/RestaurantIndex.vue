@@ -4,7 +4,7 @@
     <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
-    <pagination-control />
+    <pagination-control ref="top-page-control" />
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -45,6 +45,7 @@ import Loading from "vue3-loading-overlay"
 import StarRating from "../components/StarRating.vue"
 import PaginationControl from "../components/PaginationControl.vue"
 import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
+import { mapState } from "vuex"
 
 export default {
   name: "RestaurantIndex",
@@ -63,6 +64,7 @@ export default {
     restaurantDistances: {},
     loading: true,
   }),
+  computed: mapState(["page"]),
   methods: {
     restaurantDistance({ _geoloc: geolocation, objectID }) {
       // Check cache
@@ -91,6 +93,9 @@ export default {
     coords() {
       // Clear cache
       this.restaurantDistances = {}
+    },
+    page() {
+      this.$refs["top-page-control"].$el.scrollIntoView({ behavior: 'smooth', block: 'center'})
     },
   },
 }
