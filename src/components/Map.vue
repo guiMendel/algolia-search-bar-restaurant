@@ -20,7 +20,7 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader"
-import { mapGetters, mapState } from "vuex"
+import { mapGetters, mapState, mapActions, mapMutations } from "vuex"
 import mapStyle from "../resources/graphics/map_style"
 import pinSvg from "../resources/graphics/pin.svg"
 import flagSvg from "../resources/graphics/flag.svg"
@@ -37,10 +37,6 @@ const mapOptions = {
 
 export default {
   name: "Map",
-  emits: ["select-restaurant", "highlight-restaurant"],
-  props: {
-    highlighted: String,
-  },
   components: {
     CircleButton,
   },
@@ -59,7 +55,7 @@ export default {
   }),
   computed: {
     ...mapGetters(["restaurants"]),
-    ...mapState(["coords"]),
+    ...mapState(["coords", "highlightedRestaurant"]),
     flagIcon() {
       return {
         url: flagSvg,
@@ -85,6 +81,8 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["selectRestaurant"]),
+    ...mapMutations(["highlightRestaurant"]),
     refocusMap() {
       if (this.coords) {
         // Refresh the map
@@ -153,19 +151,21 @@ export default {
         return
       }
 
+      // Create marker
       this.markers[id] = new this.apiMaps.Marker({
         position,
         map: this.mapObject,
         icon: icon ?? this.pinIcon,
       })
 
-      // Event listening
+      // Select restaurant on click
       this.markers[id].addListener("click", () =>
-        this.$emit("select-restaurant", id),
+        this.selectRestaurant({ restaurantId: id, selector: "marker" }),
       )
 
+      // Highlight restaurant on mouseover
       this.markers[id].addListener("mouseover", () =>
-        this.$emit("highlight-restaurant", id),
+        this.highlightRestaurant({ restaurantId: id }),
       )
     },
     removeMarker(id) {
@@ -241,7 +241,7 @@ export default {
         this.updateMarkers()
       }
     },
-    highlighted(newId, oldId) {
+    highlightedRestaurant(newId, oldId) {
       if (this.mapObject) {
         this.setMarkerHighlight(newId, true)
         this.setMarkerHighlight(oldId, false)

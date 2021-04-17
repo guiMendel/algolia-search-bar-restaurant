@@ -20,10 +20,15 @@
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
       class="restaurant"
-      :class="{ highlighted: highlighted === restaurant.objectID }"
+      :class="{ highlighted: highlightedRestaurant === restaurant.objectID }"
       :id="`restaurant-${restaurant.objectID}`"
-      @mouseover="$emit('highlight', restaurant.objectID)"
-      @click="$emit('select', restaurant.objectID)"
+      @mouseover="highlightRestaurant({ restaurantId: restaurant.objectID })"
+      @click="
+        selectRestaurant({
+          restaurantId: restaurant.objectID,
+          selector: 'index',
+        })
+      "
     >
       <!-- restaurant picture -->
       <img :src="restaurant.image_url" :alt="restaurant.name" />
@@ -67,14 +72,10 @@ import Loading from "vue3-loading-overlay"
 import StarRating from "../components/StarRating.vue"
 import PaginationControl from "../components/PaginationControl.vue"
 import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
-import { mapState, mapGetters } from "vuex"
+import { mapState, mapGetters, mapActions, mapMutations } from "vuex"
 
 export default {
   name: "RestaurantIndex",
-  emits: ["highlight", "select"],
-  props: {
-    highlighted: String,
-  },
   components: {
     StarRating,
     PaginationControl,
@@ -85,7 +86,7 @@ export default {
     loading: true,
   }),
   computed: {
-    ...mapState(["page", "results", "coords"]),
+    ...mapState(["page", "results", "coords", "highlightedRestaurant"]),
     ...mapGetters(["restaurants"]),
     numberOfResults() {
       if (!this.results) return ""
@@ -102,6 +103,8 @@ export default {
     },
   },
   methods: {
+    ...mapActions(["selectRestaurant"]),
+    ...mapMutations(["highlightRestaurant"]),
     restaurantDistance({ _geoloc: geolocation, objectID }) {
       // Check cache
       if (!this.restaurantDistances[objectID]) {
@@ -120,10 +123,27 @@ export default {
       else if (distance <= 1) return `Only ${distance} km`
       else return `${distance} km`
     },
+    scrollTo(restaurantId) {
+      // Get reference to dom element
+      const restaurant = document.getElementById(`restaurant-${restaurantId}`)
+
+      if (restaurant) {
+        // Wait for map to close
+        setTimeout(() => {
+          restaurant.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          })
+        }, 100)
+      }
+    },
   },
   mounted() {
     // console.log(this.restaurants[0]);
     setTimeout(() => (this.loading = false), 2000)
+
+    // Scroll to any selected restaurants
+    this.$store.commit("subscribeToRestaurantSelection", this.scrollTo)
   },
   watch: {
     coords() {
