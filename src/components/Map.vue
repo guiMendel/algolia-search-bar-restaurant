@@ -186,10 +186,17 @@ export default {
     },
     updateLocationMarker() {
       // Only change if there is a location and the flag isn't in that location already
-      if (!this.location) this.removeMarker("location")
+      console.log(this.location)
+      if (!this.location) return this.removeMarker("location")
+
+      // Get current marker position
+      const markerPosition = this.getMarkerPosition("location")
+
+      console.log(markerPosition, this.location)
       if (
-        this.getMarkerPosition("location").lat != this.location.lat &&
-        this.getMarkerPosition("location").lng != this.location.lng
+        !markerPosition ||
+        (markerPosition.lat != this.location.lat &&
+          markerPosition.lng != this.location.lng)
       ) {
         this.setMarker("location", this.location, this.flagIcon)
         // Set up click listener
