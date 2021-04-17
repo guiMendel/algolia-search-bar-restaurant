@@ -1,3 +1,6 @@
 module.exports = {
-  publicPath: "/algolia-search-bar-restaurant/",
+  publicPath:
+    process.env.NODE_ENV === "production"
+      ? "/algolia-search-bar-restaurant/"
+      : "/",
 }
