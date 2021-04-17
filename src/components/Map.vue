@@ -102,7 +102,7 @@ export default {
         })
 
         // Listen for events
-        this.mapObject.addListener("dragstart", () => {
+        this.mapObject.addListener("center_changed", () => {
           this.mapCentered = false
         })
       })
