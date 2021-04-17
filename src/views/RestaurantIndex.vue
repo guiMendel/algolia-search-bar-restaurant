@@ -4,6 +4,10 @@
     <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
+    <pagination-control
+      @set-page="(newPage) => $emit('set-page', newPage)"
+      :page="page"
+    />
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -35,17 +39,22 @@
         >
       </div>
     </div>
+    <pagination-control
+      @set-page="(newPage) => $emit('set-page', newPage)"
+      :page="page"
+    />
   </main>
 </template>
 
 <script>
 import Loading from "vue3-loading-overlay"
 import StarRating from "../components/StarRating.vue"
+import PaginationControl from "../components/PaginationControl.vue"
 import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
 
 export default {
   name: "RestaurantIndex",
-  emits: ["highlight", "select"],
+  emits: ["highlight", "select", "set-page"],
   props: {
     restaurants: Array,
     coords: Object,
@@ -53,6 +62,7 @@ export default {
   },
   components: {
     StarRating,
+    PaginationControl,
     Loading,
   },
   data: () => ({
