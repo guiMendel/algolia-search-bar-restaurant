@@ -11,7 +11,8 @@
     "algoliasearch-helper": "^3.4.4",
     "spherical-geometry-js": "^2.0.0",
     "vue": "^3.0.4",
-    "vue3-loading-overlay": "^0.0.0"
+    "vue3-loading-overlay": "^0.0.0",
+    "vuex": "^4.0.0"
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.4",

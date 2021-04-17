@@ -1,17 +1,26 @@
 <template>
   <div class="pagination-control">
-    <span class="material-icons-round">arrow_back_ios</span>
+    <span class="material-icons-round" @click="previousPage"
+      >arrow_back_ios</span
+    >
     <p>{{ page ? page + 1 : 1 }}</p>
-    <span class="material-icons-round">arrow_forward_ios</span>
+    <span class="material-icons-round" @click="nextPage"
+      >arrow_forward_ios</span
+    >
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex"
+import { mapMutations } from "vuex"
+
 export default {
   name: "PaginationControl",
-  emits: ["set-page"],
-  props: {
-    page: Number,
+  computed: {
+    ...mapState(["page"]),
+  },
+  methods: {
+    ...mapMutations(["nextPage", "previousPage"]),
   },
 }
 </script>

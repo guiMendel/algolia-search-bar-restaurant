@@ -4,10 +4,7 @@
     <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
-    <pagination-control
-      @set-page="(newPage) => $emit('set-page', newPage)"
-      :page="page"
-    />
+    <pagination-control v-if="restaurants?.length" />
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"
@@ -39,10 +36,7 @@
         >
       </div>
     </div>
-    <pagination-control
-      @set-page="(newPage) => $emit('set-page', newPage)"
-      :page="page"
-    />
+    <pagination-control v-if="restaurants?.length" />
   </main>
 </template>
 
@@ -54,7 +48,7 @@ import { computeDistanceBetween, convertLatLng } from "spherical-geometry-js"
 
 export default {
   name: "RestaurantIndex",
-  emits: ["highlight", "select", "set-page"],
+  emits: ["highlight", "select"],
   props: {
     restaurants: Array,
     coords: Object,

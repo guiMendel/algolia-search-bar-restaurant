@@ -35,6 +35,7 @@
 
 <script>
 import { helper, searchable } from "../helpers/algolia"
+import { mapState, mapMutations } from "vuex"
 import DropdownSelect from "./DropdownSelect.vue"
 
 export default {
@@ -56,12 +57,17 @@ export default {
     // Info on all refined facets
     refinedFacets: [],
   }),
+  computed: {
+    ...mapState(["page"]),
+  },
   components: {
     DropdownSelect,
   },
   mounted() {
-    // this.helper.on("result", console.log);
     this.helper.on("result", this.onResult)
+
+    // Be ready for page resets
+    this.helper.on("change", ({ isPageReset }) => isPageReset && this.resetPage())
 
     // If we already have coords, use them
     this.updateGeolocation()
@@ -70,6 +76,7 @@ export default {
     this.helper.search()
   },
   methods: {
+    ...mapMutations(["resetPage"]),
     updateGeolocation() {
       // Activate geolocation
       if (this.coords) {
@@ -98,14 +105,15 @@ export default {
       this.currentlyOpenFacetMenu = state ? facet : null
     },
     onResult(event) {
-      // console.log(event.results);
       // Will transmit results to parent
       this.$emit("result", event.results)
 
       // Update facet lists
       this.updateFacets(event.results)
+      // console.log(event.results);
       // this.helper.searchForFacetValues("food_type", "").then(console.log)
       // console.log(this.helper.getRefinements("food_type"))
+      // console.log(this.page)
     },
     // Wrapper for searchForFacetValues that already includes any missing refined values
     // Third parameter is optional, if missing we make another call to api
@@ -177,6 +185,10 @@ export default {
     },
     coords() {
       this.updateGeolocation()
+    },
+    page(newPage) {
+      this.helper.setPage(newPage).search()
+      console.log(newPage)
     },
   },
 }
