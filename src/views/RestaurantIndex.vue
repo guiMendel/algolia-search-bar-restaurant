@@ -4,7 +4,7 @@
     <p v-if="!restaurants?.length && !loading" class="no-match">
       Sorry, no matches!
     </p>
-    <pagination-control v-if="restaurants?.length" />
+    <pagination-control />
     <div
       v-for="restaurant in restaurants"
       :key="restaurant.objectID"

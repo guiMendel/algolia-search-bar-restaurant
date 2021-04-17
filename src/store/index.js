@@ -8,6 +8,7 @@ const store = createStore({
     }
   },
   mutations: {
+    setPage: (state, newPage) => newPage >= 0 && (state.page = newPage),
     resetPage: (state) => (state.page = 0),
     nextPage: (state) => state.page++,
     previousPage: (state) => state.page > 0 && state.page--,

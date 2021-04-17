@@ -3,7 +3,13 @@
     <span class="material-icons-round" @click="previousPage"
       >arrow_back_ios</span
     >
-    <p>{{ page ? page + 1 : 1 }}</p>
+    <input
+      type="number"
+      ref="input"
+      :value="page ? parseInt(page) + 1 : 1"
+      @input="({ target: { value } }) => setPage(value - 1)"
+      @click="$refs.input.select"
+    />
     <span class="material-icons-round" @click="nextPage"
       >arrow_forward_ios</span
     >
@@ -20,21 +26,19 @@ export default {
     ...mapState(["page"]),
   },
   methods: {
-    ...mapMutations(["nextPage", "previousPage"]),
+    ...mapMutations(["nextPage", "previousPage", "setPage"]),
   },
 }
 </script>
 
 <style scoped>
 .pagination-control {
-  width: 10rem;
   height: 2rem;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  font-size: 1.8rem;
   color: var(--gray);
 }
 
@@ -59,4 +63,30 @@ span:hover {
   background-color: var(--blue);
   color: var(--color-1);
 }
+
+input {
+  width: 5rem;
+
+  border: none;
+  background: none;
+
+  cursor: pointer;
+
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--gray);
+
+  /* hide ridiculous input arrows */
+  -moz-appearance: textfield;
+}
+
+/* hide ridiculous input arrows */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
 </style>
