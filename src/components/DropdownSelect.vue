@@ -81,15 +81,11 @@ export default {
 
 <style scoped>
 .dropdown-button {
-  --padv: 0.4rem;
-  --padh: 0.7rem;
-  --border: 1px;
-
   display: flex;
   align-items: center;
 
-  padding: var(--padv) var(--padh);
-  border: var(--border) solid var(--light-gray);
+  padding: var(--dropdown-padv) var(--dropdown-padh);
+  border: var(--dropdown-border) solid var(--light-gray);
   border-radius: 30px;
 
   color: var(--text-light);
@@ -105,14 +101,13 @@ export default {
 
 .dropdown-button:active,
 .dropdown-button:hover {
-  --increase: 1px;
 
   filter: brightness(0.95);
-  border: calc(var(--border) + var(--increase)) solid var(--light-gray);
+  border: calc(var(--dropdown-border) + var(--dropdown-increase)) solid var(--light-gray);
 
-  /* discounts the padding so as to not increase elements size */
-  padding: calc(var(--padv) - var(--increase))
-    calc(var(--padh) - var(--increase));
+  /* discounts the padding so as to not dropdown-increase elements size */
+  padding: calc(var(--dropdown-padv) - var(--dropdown-increase))
+    calc(var(--dropdown-padh) - var(--dropdown-increase));
 }
 
 .dropdown-button.active {
@@ -143,5 +138,14 @@ export default {
   border-radius: 50%;
 
   font-weight: 800;
+}
+</style>
+
+<style>
+:root {
+  --dropdown-padv: 0.4rem;
+  --dropdown-padh: 0.7rem;
+  --dropdown-border: 1px;
+  --dropdown-increase: 1px;
 }
 </style>

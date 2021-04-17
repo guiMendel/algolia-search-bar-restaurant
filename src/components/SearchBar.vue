@@ -1,6 +1,7 @@
 <template>
   <main>
     <div class="searchbar">
+      <!-- magnifying glass -->
       <span class="material-icons-round">search</span>
       <input
         type="text"
@@ -9,14 +10,25 @@
         :placeholder="placeholder"
       />
     </div>
+
     <div class="facets">
-      <!-- when no facets and no user input, its loading 99% of the times -->
+      <!-- when no facets and no user input, 99% of the times its loading -->
       <p
         v-if="Object.keys(facets).length == 0 && input.length > 0"
         class="no-facets"
       >
         No filters available for this search
       </p>
+
+      <!-- clear filters button -->
+      <span
+        v-if="anyRefinements"
+        class="material-icons-round clear-filters"
+        @click="clearFacets"
+        >clear</span
+      >
+
+      <!-- facet menus -->
       <dropdown-select
         v-for="({ data, searchable }, facet) of refinedFacetsFirst(facets)"
         :key="facet"
@@ -56,7 +68,10 @@ export default {
     refinedFacets: [],
   }),
   computed: {
-    ...mapState(["page", "coords"]),
+    ...mapState(["page", "coords", "results"]),
+    anyRefinements() {
+      return this.results?.getRefinements()?.length > 0
+    },
   },
   components: {
     DropdownSelect,
@@ -178,6 +193,9 @@ export default {
     toggleFacet(facet, value) {
       this.helper.toggleFacetRefinement(facet, value).search()
     },
+    clearFacets() {
+      this.helper.clearRefinements().search()
+    },
   },
   watch: {
     input(value) {
@@ -277,6 +295,33 @@ main {
 /* Hide scrollbar for Chrome, Safari and Opera */
 .facets::-webkit-scrollbar {
   display: none;
+}
+
+.clear-filters {
+  padding: var(--dropdown-padv);
+  border: var(--dropdown-border) solid var(--light-gray);
+  border-radius: 30px;
+
+  color: var(--color-1);
+  /* background-color: white; */
+  background: var(--background-blue);
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  transition: all 100ms;
+}
+
+.clear-filters:active,
+.clear-filters:hover {
+  filter: brightness(0.95);
+  border: calc(var(--dropdown-border) + var(--dropdown-increase)) solid
+    var(--light-gray);
+
+  /* discounts the padding so as to not increase elements size */
+  padding: calc(var(--dropdown-padv) - var(--dropdown-increase))
+    calc(var(--dropdown-padv) - var(--dropdown-increase));
 }
 
 .no-facets {
