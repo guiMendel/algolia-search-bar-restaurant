@@ -173,10 +173,19 @@ export default {
       delete this.markers[id]
     },
     updateLocationMarker() {
-      if (this.location) {
+      // Only change if there is a location and the flag isn't in that location already
+      if (!this.location) this.removeMarker("location")
+      if (
+        this.getMarkerPosition("location").lat != this.location.lat &&
+        this.getMarkerPosition("location").lng != this.location.lng
+      ) {
         this.setMarker("location", this.location, this.flagIcon)
-      } else {
-        this.removeMarker("location")
+      }
+    },
+    getMarkerPosition(marker) {
+      return {
+        lat: this.markers[marker]?.position.lat(),
+        lng: this.markers[marker]?.position.lng(),
       }
     },
     // Pops an item from a list if it is present
