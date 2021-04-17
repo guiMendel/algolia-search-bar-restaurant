@@ -136,8 +136,6 @@ export default {
       const previousPinIds = [...this.activePinIds]
       this.activePinIds = []
 
-      // console.log(this.restaurantLocations)
-
       // Update pins
       for (const pin of this.restaurantLocations) {
         // Since this pin will have a marker, we withdraw it from the remove list
@@ -176,23 +174,20 @@ export default {
       this.markers[id].addListener("mouseover", () =>
         this.$emit("highlight-restaurant", id),
       )
-
-      // console.log(this.pins)
     },
     removeMarker(id) {
+      if (!this.markers[id]) return
       this.markers[id].setVisible(false)
       this.markers[id].setMap(null)
       delete this.markers[id]
     },
     updateLocationMarker() {
       // Only change if there is a location and the flag isn't in that location already
-      console.log(this.location)
       if (!this.location) return this.removeMarker("location")
 
       // Get current marker position
       const markerPosition = this.getMarkerPosition("location")
 
-      console.log(markerPosition, this.location)
       if (
         !markerPosition ||
         (markerPosition.lat != this.location.lat &&
