@@ -7,7 +7,7 @@ import fs from "fs"
 import csv from "csv-parser"
 import algoliasearch from "algoliasearch"
 
-// Get ENV variables (which would be in my gitignore if this weren't an assignment)
+// Get ENV variables
 const envPath = path.join(process.cwd(), "..", "..", "..", ".env")
 dotenv.config({ path: envPath })
 
