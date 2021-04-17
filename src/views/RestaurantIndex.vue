@@ -25,18 +25,28 @@
       @mouseover="$emit('highlight', restaurant.objectID)"
       @click="$emit('select', restaurant.objectID)"
     >
+      <!-- restaurant picture -->
       <img :src="restaurant.image_url" :alt="restaurant.name" />
+
+      <!-- restaurant details -->
       <div class="details">
+        <!-- restaurant name -->
         <h1 v-html="restaurant._highlightResult.name.value"></h1>
+
+        <!-- restaurant rating -->
         <star-rating
           :rating="restaurant.stars_count"
           :reviews="restaurant.reviews_count"
         />
+
+        <!-- restaurant additional info -->
         <div class="misc">
           <span>{{ restaurant.food_type }}</span>
           <span>{{ restaurant.area }}</span>
           <span>{{ restaurant.price_range }}</span>
         </div>
+
+        <!-- restaurant distance -->
         <small
           v-if="coords"
           class="distance"
@@ -63,7 +73,6 @@ export default {
   name: "RestaurantIndex",
   emits: ["highlight", "select"],
   props: {
-    coords: Object,
     highlighted: String,
   },
   components: {
@@ -76,7 +85,7 @@ export default {
     loading: true,
   }),
   computed: {
-    ...mapState(["page", "results"]),
+    ...mapState(["page", "results", "coords"]),
     ...mapGetters(["restaurants"]),
     numberOfResults() {
       if (!this.results) return ""

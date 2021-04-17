@@ -42,7 +42,6 @@ export default {
   name: "SearchBar",
   props: {
     placeholder: String,
-    coords: Object,
   },
   data: () => ({
     helper,
@@ -57,7 +56,7 @@ export default {
     refinedFacets: [],
   }),
   computed: {
-    ...mapState(["page"]),
+    ...mapState(["page", "coords"]),
   },
   components: {
     DropdownSelect,
@@ -72,17 +71,17 @@ export default {
     )
 
     // If we already have coords, use them
-    this.updateGeolocation()
+    this.updateGeolocationParameter()
 
     // Initial results
     this.helper.search()
   },
   methods: {
     ...mapMutations(["resetPage", "setResults"]),
-    updateGeolocation() {
+    updateGeolocationParameter() {
       // Activate geolocation
       if (this.coords) {
-        const stringCoords = `${this.coords.latitude}, ${this.coords.longitude}`
+        const stringCoords = `${this.coords.lat}, ${this.coords.lng}`
         // console.log(stringCoords)
         this.helper.setQueryParameter("aroundLatLng", stringCoords).search()
       } else {
@@ -182,11 +181,10 @@ export default {
   },
   watch: {
     input(value) {
-      // if (this.coords.loading) return
       this.helper.setQuery(value).search()
     },
     coords() {
-      this.updateGeolocation()
+      this.updateGeolocationParameter()
     },
     page(newPage) {
       this.helper.setPage(newPage).search()

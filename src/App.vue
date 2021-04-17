@@ -22,15 +22,11 @@
     </div>
 
     <!-- search bar -->
-    <search-bar
-      :coords="coords"
-      placeholder="search by name, cuisine or location"
-    />
+    <search-bar placeholder="search by name, cuisine or location" />
 
     <div class="results" :class="{ hide: splitScreen && showMap }">
       <!-- results -->
       <restaurant-index
-        :coords="coords"
         :highlighted="highlightedRestaurant"
         @highlight="highlightRestaurant"
         @select="selectRestaurant"
@@ -42,7 +38,6 @@
       <Map
         v-show="showMap || splitScreen"
         class="map"
-        :coords="coords"
         :highlighted="highlightedRestaurant"
         @select-restaurant="selectRestaurant"
         @highlight-restaurant="highlightRestaurant"
@@ -57,6 +52,7 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex"
 import CircleButton from "./components/CircleButton.vue"
 import SearchBar from "./components/SearchBar.vue"
 import Map from "./components/Map.vue"
@@ -71,7 +67,6 @@ export default {
     Map,
   },
   data: () => ({
-    coords: null,
     useNYcoords: false,
     showMap: false,
     // Determines if screen is split between map and results
@@ -80,6 +75,7 @@ export default {
     highlightTimeout: null,
   }),
   computed: {
+    ...mapState(["coords"]),
     locationIcon() {
       if (this.useNYcoords) return "location_off"
       else if (this.coords) return "location_on"
@@ -109,6 +105,8 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["setCoords"]),
+    ...mapActions(["updateCoords"]),
     selectRestaurant(id) {
       const restaurant = document.getElementById(`restaurant-${id}`)
       if (restaurant) {
@@ -147,21 +145,13 @@ export default {
         this.highlightedRestaurant = null
       }, duration)
     },
-    getLocation() {
-      // Get user's location
-      navigator?.geolocation.getCurrentPosition(
-        ({ coords: { latitude, longitude } }) =>
-          (this.coords = { latitude, longitude }),
-        // On error, erase coords
-        () => (this.coords = null),
-      )
-    },
     setSplitScreen() {
       this.splitScreen = window.innerWidth >= 1024
     },
   },
   created() {
-    this.getLocation()
+    // Get user location
+    this.updateCoords()
 
     this.setSplitScreen()
     // Listen to changes in screen width
@@ -172,12 +162,13 @@ export default {
   watch: {
     useNYcoords(use) {
       if (use) {
-        this.coords = {
-          latitude: 40.71,
-          longitude: -74.012,
-        }
+        // Use NY coords!
+        this.setCoords({
+          lat: 40.71,
+          lng: -74.012,
+        })
       } else {
-        this.getLocation()
+        this.updateCoords()
       }
     },
   },
@@ -223,7 +214,7 @@ export default {
 
 .results {
   width: 100%;
-/* 
+  /* 
   display: flex;
   flex-direction: column;
   align-items: center; */

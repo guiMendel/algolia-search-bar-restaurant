@@ -20,7 +20,7 @@
 
 <script>
 import { Loader } from "@googlemaps/js-api-loader"
-import { mapGetters } from "vuex"
+import { mapGetters, mapState } from "vuex"
 import mapStyle from "../resources/graphics/map_style"
 import pinSvg from "../resources/graphics/pin.svg"
 import flagSvg from "../resources/graphics/flag.svg"
@@ -39,7 +39,6 @@ export default {
   name: "Map",
   emits: ["select-restaurant", "highlight-restaurant"],
   props: {
-    coords: Object,
     highlighted: String,
   },
   components: {
@@ -60,6 +59,7 @@ export default {
   }),
   computed: {
     ...mapGetters(["restaurants"]),
+    ...mapState(["coords"]),
     flagIcon() {
       return {
         url: flagSvg,
@@ -74,13 +74,6 @@ export default {
         anchor: new this.apiMaps.Point(25, 50),
       }
     },
-    location() {
-      if (!this.coords) return null
-      return {
-        lat: this.coords.latitude,
-        lng: this.coords.longitude,
-      }
-    },
     restaurantLocations() {
       if (!this.restaurants) return []
       return this.restaurants.map(
@@ -93,9 +86,9 @@ export default {
   },
   methods: {
     refocusMap() {
-      if (this.location) {
+      if (this.coords) {
         // Refresh the map
-        this.mapObject.panTo(this.location)
+        this.mapObject.panTo(this.coords)
         this.mapObject.setZoom(mapOptions.zoom)
         this.mapCentered = true
       }
@@ -107,7 +100,7 @@ export default {
 
         // Load the map
         this.mapObject = new this.apiMaps.Map(this.$refs.map, {
-          center: this.location,
+          center: this.coords,
           ...mapOptions,
         })
 
@@ -183,17 +176,17 @@ export default {
     },
     updateLocationMarker() {
       // Only change if there is a location and the flag isn't in that location already
-      if (!this.location) return this.removeMarker("location")
+      if (!this.coords) return this.removeMarker("location")
 
       // Get current marker position
       const markerPosition = this.getMarkerPosition("location")
 
       if (
         !markerPosition ||
-        (markerPosition.lat != this.location.lat &&
-          markerPosition.lng != this.location.lng)
+        (markerPosition.lat != this.coords.lat &&
+          markerPosition.lng != this.coords.lng)
       ) {
-        this.setMarker("location", this.location, this.flagIcon)
+        this.setMarker("location", this.coords, this.flagIcon)
         // Set up click listener
         this.apiMaps.event.clearInstanceListeners(this.markers.location)
         this.markers.location.addListener("click", this.refocusMap)
