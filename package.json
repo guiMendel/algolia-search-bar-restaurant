@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.4",
-    "vite": "^1.0.0-rc.13",
-    "execa": "latest"
+    "execa": "latest",
+    "vite": "^1.0.0-rc.13"
   }
 }
