@@ -180,6 +180,9 @@ export default {
         this.getMarkerPosition("location").lng != this.location.lng
       ) {
         this.setMarker("location", this.location, this.flagIcon)
+        // Set up click listener
+        this.apiMaps.event.clearInstanceListeners(this.markers.location)
+        this.markers.location.addListener("click", this.refocusMap)
       }
     },
     getMarkerPosition(marker) {
