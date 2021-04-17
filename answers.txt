@@ -102,11 +102,11 @@ The high level proccess can be broken down to only 3 steps.
 Check out our documentation later for a more in-depth explanation:
 https://www.algolia.com/doc/guides/getting-started/how-algolia-works/
 
-You can perform any but the last of them either using our online dashboard or via our api, which has integrations with many, many languages. You can check out the full list in our documentation.
+You can perform any but the last of these steps either using our online dashboard or via our api, which has integrations with many, many programming languages. You can check out the full list in our documentation.
 
 First and foremost, you have to send us your data in a format our engine understands. That's really all it takes to set up our service! You'll be able to immediately start testing away the search functionality.
 
-Then, you'll be able to configure the relevance and ranking settings of your data to ensure our engine functionality is aligned with your business metrics. All while being able to immediately test the new searching experience.
+Next, you'll be able to configure the relevance and ranking settings of your data to ensure our engine functionality is aligned with your business metrics. All while being able to immediately test the new searching experience.
 
 I'm sure you will also want your clients to have access to this experience though, so the last thing you'll need is to actually set up a search user interface. Thankfully, this proccess is made incredibly easy by our family of UI/UX libraries, called InstantSearch.
 It will provide you with all the UI components you need to have your customers wowing in no time.
@@ -116,7 +116,7 @@ To sum it all up, here's what you will be doing:
 2 - Configure relevance and ranking settings
 3 - Build a search user interface
 
-And count on me to aid and support you throughout the whole proccess. We are here to help you, always!
+Do count on me to aid and support you throughout the whole proccess. We are here to help you, always!
 
 Thank you again for your interest in our services! Please send me a message if you still have any questions.
 Have an amazing weekend!
