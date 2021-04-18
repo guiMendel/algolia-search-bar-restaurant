@@ -1,5 +1,8 @@
 <template>
   <div class="container">
+    <!-- tutorial -->
+    <tutorial v-if="showTutorial" @close="showTutorial = false" />
+
     <!-- buttons -->
     <div class="buttons">
       <circle-button
@@ -18,6 +21,12 @@
         @click="toggleMap(!showMap)"
         :icon="mapIcon"
         :hoverMessage="mapHoverMessage"
+      />
+      <circle-button
+        class="toggle-tutorial"
+        @click="showTutorial = true"
+        icon="help_outline"
+        hoverMessage="Quick tour"
       />
     </div>
 
@@ -51,11 +60,13 @@ import CircleButton from "./components/CircleButton.vue"
 import SearchBar from "./components/SearchBar.vue"
 import Map from "./components/Map.vue"
 import RestaurantIndex from "./views/RestaurantIndex.vue"
+import Tutorial from "./views/Tutorial.vue"
 
 export default {
   name: "App",
   components: {
     RestaurantIndex,
+    Tutorial,
     SearchBar,
     CircleButton,
     Map,
@@ -63,6 +74,7 @@ export default {
   data: () => ({
     useNYcoords: false,
     showMap: false,
+    showTutorial: false,
     // Determines if screen is split between map and results
     splitScreen: window.innerWidth >= 1024,
   }),
@@ -135,6 +147,9 @@ export default {
         this.updateCoords()
       }
     },
+    showTutorial(show) {
+      document.body.style.overflow = show ? "hidden" : "initial"
+    },
   },
 }
 </script>
@@ -145,6 +160,10 @@ export default {
 
   display: flex;
   justify-content: center;
+}
+
+.container.no-scroll {
+  overflow: hidden;
 }
 
 .map {

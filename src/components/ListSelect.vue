@@ -1,7 +1,7 @@
 <template>
-  <div class="shadow" @click.self="$emit('close')">
+  <div class="shadow" @click.self="close()">
     <div class="list">
-      <span @click.self="$emit('close')" class="material-icons-round close"
+      <span @click.self="close()" class="material-icons-round close"
         >close</span
       >
       <h1>{{ name }}</h1>
@@ -120,7 +120,7 @@ export default {
 
   padding: 0.5rem;
   /* background-color: var(--blue); */
-  background: var(--button-back-blue);
+  background: var(--background-blue);
   color: white;
   border-radius: 50%;
 

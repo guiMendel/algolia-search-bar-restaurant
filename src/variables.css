@@ -4,20 +4,25 @@
     rgba(249, 249, 249, 1) 0%,
     rgba(244, 252, 255, 1) 100%
   );
+  --background-gray: linear-gradient(
+    135deg,
+    rgb(63, 63, 63) 0%,
+    rgb(94, 98, 98) 100%
+  );
   --background-blue: linear-gradient(
     135deg,
     rgba(39, 50, 146, 1) 0%,
     rgb(29, 87, 162) 100%
   );
+  --background-red: linear-gradient(
+    135deg,
+    rgb(155, 76, 76) 0%,
+    rgb(168, 72, 72) 100%
+  );
   --button-back: radial-gradient(
     circle,
     rgb(255, 255, 255) 20%,
     rgb(225, 237, 241) 100%
-  );
-  --button-back-blue: radial-gradient(
-    circle,
-    rgb(39, 68, 146) 20%,
-    rgba(18, 26, 97, 1) 100%
   );
 
   --color-1: rgb(255, 255, 255);
