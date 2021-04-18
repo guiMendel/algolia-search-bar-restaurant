@@ -1,41 +1,110 @@
 <template>
-  <main :class="[`vertical-${vertical}`, `horizontal-${horizontal}`]">
-    <span @click.self="$emit('close')" class="material-icons-round close"
-      >close</span
+  <transition name="fade">
+    <main
+      v-if="active"
+      :class="[`vertical-${vertical}`, `horizontal-${horizontal}`]"
     >
-    <slot></slot>
-    <span @click.self="$emit('close')" class="material-icons-round next"
-      >navigate_next</span
-    >
-  </main>
+      <span
+        @click.self="toggleTutorial(false)"
+        class="material-icons-round close"
+        >close</span
+      >
+      <p v-html="content" class="tutorial-dialogue"></p>
+      <span
+        v-if="advanceOn == null || (advanceOn && !advancing)"
+        @click.self="advance"
+        class="material-icons-round next"
+        >navigate_next</span
+      >
+    </main>
+  </transition>
 </template>
 
 <script>
+import { mapMutations } from "vuex"
 import CircleButton from "./CircleButton.vue"
 
 export default {
   name: "TutorialDialogueBox",
-  emits: ["close"],
+  emits: ["advance"],
   props: {
+    // If this dialogue is to be currently displayed
+    active: Boolean,
+    // Vertical position
     vertical: String,
+    // Horizontal position
     horizontal: String,
+    // The dialogue text
+    content: String,
+    // The DOM ids of elements to be displayed over the shadow
+    show: Array,
+    // The DOM ids of elements to be displayed over the shadow and hihlighted
     highlight: Array,
+    // When this becomes true, automatically advances to next phase. Disables advance button (unless it's true from the very beginning)
+    advanceOn: Boolean,
+    // An action to be performed when this dialogue pops up
+    action: Function,
   },
+  data: () => ({
+    // Indicates whether advance has been called
+    advancing: false,
+  }),
   components: {
     CircleButton,
   },
-  mounted() {
-    // Highlight all requested elements
-    for (const id of this.highlight) {
-      // document.getElementById(id).style.zIndex = 225
-      document.getElementById(id).classList.add("tutorial-highlight")
-    }
+  methods: {
+    ...mapMutations(["toggleTutorial"]),
+    advance() {
+      this.advancing = true
+      this.$emit("advance")
+    },
+    showElements() {
+      // Show all requested elements
+      if (this.show)
+        for (const id of this.show) {
+          // document.getElementById(id).style.zIndex = 225
+          document.getElementById(id).classList.add("tutorial-show")
+        }
+
+      // Highlight all requested elements
+      if (this.highlight)
+        for (const id of this.highlight) {
+          // document.getElementById(id).style.zIndex = 225
+          // Scroll to the last highlighted element
+          document.getElementById(id).scrollIntoView({ block: "center" })
+          document.getElementById(id).classList.add("tutorial-show")
+          document.getElementById(id).classList.add("tutorial-highlight")
+        }
+    },
+    hideElements() {
+      if (!this.highlight) return
+
+      // Undo element highlighting
+      for (const id of [...(this.highlight ?? []), ...(this.show ?? [])]) {
+        document.getElementById(id).classList.remove("tutorial-highlight")
+        document.getElementById(id).classList.remove("tutorial-show")
+      }
+    },
+  },
+  watch: {
+    active() {
+      if (this.active) {
+        // Perform it's action
+        if (this.action) this.action()
+
+        // Wait a bit before showing elements
+        setTimeout(this.showElements, 100)
+      } else {
+        this.hideElements()
+      }
+    },
+    advanceOn(passes) {
+      if (passes) this.advance()
+    },
   },
   beforeUnmount() {
-    // Undo element highlighting
-    for (const id of this.highlight) {
-      document.getElementById(id).classList.remove("tutorial-highlight")
-    }
+    // Certifies to always clean up after itself
+    this.hideElements()
   },
 }
 </script>
@@ -103,12 +172,13 @@ main {
 
   cursor: pointer;
 
-  transition: filter 170ms;
+  transition: all 170ms;
 }
 
-.next:hover {
+.next:not(.disabled):hover {
   /* background-color: var(--vibrant-blue); */
   filter: brightness(1.3);
+  transform: translateY(-2px);
 }
 
 .vertical-top {
@@ -116,21 +186,36 @@ main {
 }
 
 .vertical-bottom {
-  bottom: 2rem;
+  bottom: 5rem;
 }
 
-.horizontal-left {
-  left: 2rem;
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 400ms ease-in-out;
 }
 
-.horizontal-right {
-  right: 2rem;
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+@media (min-width: 850px) {
+  .horizontal-left {
+    left: 2rem;
+  }
+
+  .horizontal-right {
+    right: 2rem;
+  }
 }
 </style>
 
 <style>
-.tutorial-highlight {
+.tutorial-show {
   z-index: 200 !important;
+}
+
+.tutorial-highlight {
   outline: 5px solid var(--vibrant-blue);
   outline-offset: 5px;
 }
@@ -142,5 +227,12 @@ main {
   to {
     transform: translateY(-5px);
   }
+}
+</style>
+
+<style>
+.tutorial-dialogue b {
+  font-weight: 800;
+  color: var(--blue);
 }
 </style>

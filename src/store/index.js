@@ -4,9 +4,16 @@ import { createStore } from "vuex"
 const store = createStore({
   state() {
     return {
-      page: 0,
       results: null,
+      page: 0,
+
       coords: null,
+      usingNYcoords: false,
+
+      mapOpen: false,
+      tutorialOpen: false,
+      // Determines if screen is split between map and results
+      splitScreen: window.innerWidth >= 1024,
 
       // Holds a list of callbacks to call upon a restaurant's selection
       restaurantSelectionObservers: [],
@@ -21,7 +28,13 @@ const store = createStore({
     },
   },
   actions: {
-    updateCoords({ commit }) {
+    toggleNYcoords({ state, commit, dispatch }) {
+      // If already using, switch to actual coordinates
+      if (state.usingNYcoords) dispatch("updateCoords")
+      else commit("useNYcoords")
+    },
+
+    updateCoords({ state, commit }) {
       // Get user's location
       navigator?.geolocation.getCurrentPosition(
         ({ coords: { latitude: lat, longitude: lng } }) =>
@@ -29,6 +42,9 @@ const store = createStore({
         // On error, erase coords
         () => commit("unsetCoords"),
       )
+
+      // Makes sure state is updated
+      state.usingNYcoords = false
     },
     // Alert all observers for this restaurant and highlight it for 2 seconds
     selectRestaurant(
@@ -53,10 +69,30 @@ const store = createStore({
 
     setCoords: (state, newCoords) => (state.coords = newCoords),
     unsetCoords: (state) => (state.coords = null),
+    useNYcoords(state) {
+      state.coords = {
+        lat: 40.71,
+        lng: -74.012,
+      }
+      state.usingNYcoords = true
+    },
 
     // Subscribe a callback to the restaurant selection event
     subscribeToRestaurantSelection(state, onSelect) {
       state.restaurantSelectionObservers.push(onSelect)
+    },
+
+    toggleMap(state, open) {
+      // Only open if there are coords, but can always close
+      state.mapOpen = state.coords && open
+    },
+
+    toggleTutorial(state, open) {
+      state.tutorialOpen = open
+    },
+
+    setSplitScreen(state) {
+      state.splitScreen = window.innerWidth >= 1024
     },
 
     // Set the referenced restaurant as "highlighted" for the given duration

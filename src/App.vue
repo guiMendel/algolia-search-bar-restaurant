@@ -1,34 +1,7 @@
 <template>
   <div class="container">
     <!-- tutorial -->
-    <tutorial v-if="showTutorial" @close="showTutorial = false" />
-
-    <!-- buttons -->
-    <div id="main-buttons">
-      <circle-button
-        class="toggle-NY-coords"
-        :class="{ active: !useNYcoords, disabled: !coords }"
-        @click="useNYcoords = !useNYcoords"
-        :icon="locationIcon"
-        :hoverMessage="locationHoverMessage"
-      />
-      <circle-button
-        class="toggle-map"
-        :class="{
-          active: showMap && !splitScreen,
-          disabled: !showMap && !coords,
-        }"
-        @click="toggleMap(!showMap)"
-        :icon="mapIcon"
-        :hoverMessage="mapHoverMessage"
-      />
-      <circle-button
-        class="toggle-tutorial"
-        @click="showTutorial = true"
-        icon="help_outline"
-        hoverMessage="Quick demo tour"
-      />
-    </div>
+    <tutorial v-if="tutorialOpen" />
 
     <!-- search bar -->
     <search-bar
@@ -36,22 +9,45 @@
       placeholder="search by name, cuisine or location"
     />
 
-    <div class="results" :class="{ hide: splitScreen && showMap }">
+    <div id="results" :class="{ hide: splitScreen && mapOpen }">
       <!-- results -->
       <restaurant-index />
     </div>
 
     <!-- map -->
     <transition name="slide">
-      <Map
-        v-show="showMap || splitScreen"
-        class="map"
-        @open="!splitScreen && toggleMap(true)"
-      />
+      <Map id="map" v-show="mapOpen || splitScreen" />
     </transition>
 
+    <!-- buttons -->
+    <div id="main-buttons">
+      <circle-button
+        id="toggle-NY-coords"
+        :class="{ active: !usingNYcoords && coords }"
+        @click="toggleNYcoords"
+        :icon="locationIcon"
+        :hoverMessage="locationHoverMessage"
+      />
+      <circle-button
+        id="toggle-map"
+        :class="{
+          active: mapOpen && !splitScreen,
+          disabled: !mapOpen && !coords,
+        }"
+        @click="toggleMap(!mapOpen)"
+        :icon="mapIcon"
+        :hoverMessage="mapHoverMessage"
+      />
+      <circle-button
+        class="toggle-tutorial"
+        @click="toggleTutorial(true)"
+        icon="help_outline"
+        hoverMessage="Quick demo tour"
+      />
+    </div>
+
     <!-- footer with additional messages -->
-    <p v-if="locationMessage" class="location-message">
+    <p v-show="locationMessage" id="location-message">
       {{ locationMessage }}
     </p>
   </div>
@@ -74,53 +70,50 @@ export default {
     CircleButton,
     Map,
   },
-  data: () => ({
-    useNYcoords: false,
-    showMap: false,
-    showTutorial: false,
-    // Determines if screen is split between map and results
-    splitScreen: window.innerWidth >= 1024,
-  }),
   computed: {
-    ...mapState(["coords"]),
+    ...mapState([
+      "coords",
+      "usingNYcoords",
+      "mapOpen",
+      "tutorialOpen",
+      "splitScreen",
+    ]),
     locationIcon() {
-      if (this.useNYcoords) return "location_off"
+      if (this.usingNYcoords) return "location_off"
       else if (this.coords) return "location_on"
       else return "fmd_bad"
     },
     mapIcon() {
       if (this.splitScreen) {
-        if (this.showMap) return "close_fullscreen"
+        if (this.mapOpen) return "close_fullscreen"
         else return "open_in_full"
       } else return "map"
     },
     mapHoverMessage() {
       if (this.splitScreen) {
-        if (this.showMap) return "Condense map"
+        if (this.mapOpen) return "Condense map"
         else return "Expand map"
       } else return "Show map"
     },
     locationHoverMessage() {
-      if (this.useNYcoords) return "Simulating location from New York"
+      if (this.usingNYcoords) return "Simulating location from New York"
       else if (this.coords) return "Using real geolocation"
       else return "No location access"
     },
     locationMessage() {
-      if (this.useNYcoords) return "Simulating location from New York"
+      if (this.usingNYcoords) return "Simulating location from New York"
       else if (!this.coords) return "Failed to retrieve current location"
       else return ""
     },
   },
   methods: {
-    ...mapMutations(["setCoords"]),
-    ...mapActions(["updateCoords"]),
-    setSplitScreen() {
-      this.splitScreen = window.innerWidth >= 1024
-    },
-    toggleMap(open) {
-      // Only open if there are coords, but can always close
-      this.showMap = this.coords && open
-    },
+    ...mapMutations([
+      "setCoords",
+      "toggleMap",
+      "toggleTutorial",
+      "setSplitScreen",
+    ]),
+    ...mapActions(["updateCoords", "toggleNYcoords"]),
   },
   created() {
     // Get user location
@@ -131,28 +124,6 @@ export default {
 
     // Listen to changes in screen width
     window.addEventListener("resize", () => this.setSplitScreen())
-
-    // Close map when a restaurant is selected from the map
-    this.$store.commit(
-      "subscribeToRestaurantSelection",
-      (_, selector) => selector === "marker" && (this.showMap = false),
-    )
-  },
-  watch: {
-    useNYcoords(use) {
-      if (use) {
-        // Use NY coords!
-        this.setCoords({
-          lat: 40.71,
-          lng: -74.012,
-        })
-      } else {
-        this.updateCoords()
-      }
-    },
-    showTutorial(show) {
-      document.body.style.overflow = show ? "hidden" : "initial"
-    },
   },
 }
 </script>
@@ -169,7 +140,7 @@ export default {
   overflow: hidden;
 }
 
-.map {
+#map {
   position: fixed;
 
   width: 100%;
@@ -198,22 +169,20 @@ export default {
   background: var(--gray);
 }
 
-.results {
+#results {
   width: 100%;
-  /* 
-  display: flex;
-  flex-direction: column;
-  align-items: center; */
+
+  background-color: var(--color-2);
 
   padding-top: 8rem;
   padding-bottom: 8rem;
 }
 
-.results.hide {
+#results.hide {
   display: none;
 }
 
-.location-message {
+#location-message {
   z-index: 100;
 
   position: fixed;
@@ -241,7 +210,7 @@ export default {
 }
 
 @media (min-width: 650px) {
-  .results {
+  #results {
     padding-top: 9rem;
   }
 }
@@ -250,7 +219,7 @@ export default {
     flex-direction: column-reverse;
   }
 
-  .location-message {
+  #location-message {
     right: 0;
     width: max-content;
 
@@ -259,10 +228,8 @@ export default {
     padding: 0.5rem 1rem;
     border-radius: 20px 0 0 0;
   }
-}
 
-@media (min-width: 850px) {
-  .map {
+  #map {
     z-index: 5;
     position: sticky;
     top: 0;
@@ -271,7 +238,7 @@ export default {
     width: 100%;
   }
 
-  .results {
+  #results {
     z-index: 10;
 
     min-width: 38rem;

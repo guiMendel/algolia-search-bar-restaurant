@@ -16,8 +16,9 @@
       <span class="material-icons-round"> expand_more </span>
     </div>
 
+    <!-- not openable during the tutorial -->
     <list-select
-      v-if="isOpen"
+      v-if="isOpen && !tutorialOpen"
       :name="adjustCase(placeholder)"
       :options="options"
       :search="search"
@@ -28,6 +29,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex"
 // Uses this selection list when dropdown is active
 import ListSelect from "./ListSelect.vue"
 
@@ -46,6 +48,7 @@ export default {
     ListSelect,
   },
   computed: {
+    ...mapState(["tutorialOpen"]),
     selectedOptions() {
       return (
         this.options
@@ -101,9 +104,9 @@ export default {
 
 .dropdown-button:active,
 .dropdown-button:hover {
-
   filter: brightness(0.95);
-  border: calc(var(--dropdown-border) + var(--dropdown-increase)) solid var(--light-gray);
+  border: calc(var(--dropdown-border) + var(--dropdown-increase)) solid
+    var(--light-gray);
 
   /* discounts the padding so as to not dropdown-increase elements size */
   padding: calc(var(--dropdown-padv) - var(--dropdown-increase))

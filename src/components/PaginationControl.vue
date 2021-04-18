@@ -43,7 +43,7 @@ export default {
 }
 
 span {
-  padding: 0.3rem;
+  padding: 0.5rem;
   cursor: pointer;
   transition: all 500ms;
 
@@ -55,11 +55,6 @@ span {
 }
 
 span:hover {
-  padding: 0.5rem;
-
-  /* counteract element expansion */
-  margin: -0.2rem;
-
   background-color: var(--blue);
   color: var(--color-1);
 }

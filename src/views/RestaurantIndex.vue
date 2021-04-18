@@ -13,7 +13,7 @@
       Sorry, no matches!
     </p>
 
-    <pagination-control ref="top-page-control" />
+    <pagination-control ref="top-page-control" id="top-page-control" />
 
     <!-- restaurants -->
     <div

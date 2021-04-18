@@ -5,7 +5,7 @@
     </div>
     <circle-button
       v-if="mapObject"
-      class="refocus-button"
+      id="refocus-button"
       :class="{
         active: mapCentered,
         disabled: !coords,
@@ -37,7 +37,6 @@ const mapOptions = {
 
 export default {
   name: "Map",
-  emits: ["open"],
   components: {
     CircleButton,
   },
@@ -56,7 +55,7 @@ export default {
   }),
   computed: {
     ...mapGetters(["restaurants"]),
-    ...mapState(["coords", "highlightedRestaurant"]),
+    ...mapState(["coords", "highlightedRestaurant", "splitScreen"]),
     flagIcon() {
       return {
         url: flagSvg,
@@ -83,7 +82,7 @@ export default {
   },
   methods: {
     ...mapActions(["selectRestaurant"]),
-    ...mapMutations(["highlightRestaurant"]),
+    ...mapMutations(["highlightRestaurant", "toggleMap"]),
     refocusMap() {
       if (this.coords) {
         // Refresh the map
@@ -159,10 +158,11 @@ export default {
         icon: icon ?? this.pinIcon,
       })
 
-      // Select restaurant on click
-      this.markers[id].addListener("click", () =>
-        this.selectRestaurant({ restaurantId: id, selector: "marker" }),
-      )
+      // Select restaurant & close map on click
+      this.markers[id].addListener("click", () => {
+        this.toggleMap(false)
+        this.selectRestaurant({ restaurantId: id, selector: "marker" })
+      })
 
       // Highlight restaurant on mouseover
       this.markers[id].addListener("mouseover", () =>
@@ -226,8 +226,8 @@ export default {
       // Prevent focusing on inexistent stuff
       if (!this.mapObject || !this.markers[restaurantId]) return
 
-      // Open map, if closed
-      this.$emit("open")
+      // Open map, if not in split screen
+      if (!this.splitScreen) this.toggleMap(true)
 
       // Pan to selected restaurant
       this.mapObject.panTo(this.markers[restaurantId].position)
@@ -288,7 +288,7 @@ export default {
   height: 100%;
 }
 
-.refocus-button {
+#refocus-button {
   z-index: 100;
 
   position: absolute;
@@ -296,11 +296,11 @@ export default {
   left: 2rem;
 }
 
-.refocus-button.active {
+#refocus-button.active {
   color: var(--blue);
 }
 
-.refocus-button.disabled {
+#refocus-button.disabled {
   color: var(--light-gray);
   background: var(--gray);
 }
