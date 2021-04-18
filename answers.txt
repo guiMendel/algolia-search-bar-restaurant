@@ -25,7 +25,7 @@ Here's our documentation on them:
 https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/#algolia-records
 
 Indexing, on the other hand, refers to the handling (creating, updating, etc.) of indices.
-But what is an index, I hear you ask? Indices are collections of records! They're what we were so far calling datasets. We separate your data in different indices so that you don't mix your cats with your dogs.
+But what is an index, I hear you ask? Indices are collections of records! They're what we were so far calling datasets. We separate your data in different indices so that you don't accidentaly mix your cats with your dogs.
 
 You can find a more detailed explanation in our docs:
 https://www.algolia.com/doc/guides/sending-and-managing-data/prepare-your-data/#algolia-index
@@ -77,7 +77,7 @@ Hi Leo!
 
 We are thrilled to have caught your interest! I'm sure you will love your experience with our services.
 
-In fact, I have great news for you - we take much pride in how simple Algolia is to set up and use!
+In fact, I have great news for you — we take much pride in how simple Algolia is to set up and use!
 The high level proccess can be broken down to only 3 steps:
 
 1 - Index your data into Algolia
