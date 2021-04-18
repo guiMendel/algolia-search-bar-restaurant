@@ -18,7 +18,7 @@
 
     <!-- not openable during the tutorial -->
     <list-select
-      v-if="isOpen && !tutorialOpen"
+      v-if="isOpen"
       :name="adjustCase(placeholder)"
       :options="options"
       :search="search"

@@ -89,7 +89,7 @@ const store = createStore({
 
     toggleMap(state, open) {
       // Only open if there are coords, but can always close
-      state.mapOpen = state.coords && open
+      state.mapOpen = state.coords != null && open
     },
 
     toggleTutorial(state, open) {

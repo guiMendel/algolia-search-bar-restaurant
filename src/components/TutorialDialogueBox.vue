@@ -3,15 +3,21 @@
     <main
       v-if="active"
       :class="[`vertical-${vertical}`, `horizontal-${horizontal}`]"
+      :style="{ paddingBottom: advanceButtonAvailable ? '3rem' : '2rem' }"
     >
+      <!-- close button -->
       <span
         @click.self="toggleTutorial(false)"
         class="material-icons-round close"
         >close</span
       >
+
+      <!-- dialogue text -->
       <p v-html="content" class="tutorial-dialogue"></p>
+
+      <!-- advance button -->
       <span
-        v-if="advanceOn == null || (advanceOn && !advancing)"
+        v-if="advanceButtonAvailable"
         @click.self="advance"
         class="material-icons-round next"
         >navigate_next</span
@@ -52,6 +58,13 @@ export default {
   components: {
     CircleButton,
   },
+  computed: {
+    advanceButtonAvailable() {
+      // If no advanceOn is set, or if it is set but was already true from the very beginning
+      console.log(this.advanceOn)
+      return this.advanceOn == null || (this.advanceOn && !this.advancing)
+    },
+  },
   methods: {
     ...mapMutations(["toggleTutorial"]),
     advance() {
@@ -70,19 +83,23 @@ export default {
       if (this.highlight)
         for (const id of this.highlight) {
           // document.getElementById(id).style.zIndex = 225
-          // Scroll to the last highlighted element
-          document.getElementById(id).scrollIntoView({ block: "center" })
-          document.getElementById(id).classList.add("tutorial-show")
-          document.getElementById(id).classList.add("tutorial-highlight")
+          const element = document.getElementById(id)
+          if (element) {
+            // Scroll to the last highlighted element
+            element.scrollIntoView({ block: "center" })
+            element.classList.add("tutorial-show")
+            element.classList.add("tutorial-highlight")
+          }
         }
     },
     hideElements() {
-      if (!this.highlight) return
-
       // Undo element highlighting
       for (const id of [...(this.highlight ?? []), ...(this.show ?? [])]) {
-        document.getElementById(id).classList.remove("tutorial-highlight")
-        document.getElementById(id).classList.remove("tutorial-show")
+        const element = document.getElementById(id)
+        if (element) {
+          element.classList.remove("tutorial-highlight")
+          element.classList.remove("tutorial-show")
+        }
       }
     },
   },

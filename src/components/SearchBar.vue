@@ -68,7 +68,7 @@ export default {
     refinedFacets: [],
   }),
   computed: {
-    ...mapState(["page", "coords", "results"]),
+    ...mapState(["page", "coords", "results", "tutorialOpen"]),
     anyRefinements() {
       return this.results?.getRefinements()?.length > 0
     },
@@ -118,7 +118,8 @@ export default {
     },
     // The function we wrap and give to the dropdowns so they can control their "openness"
     setOpen(facet, state) {
-      this.currentlyOpenFacetMenu = state ? facet : null
+      // Dont' open if tutorial is open
+      this.currentlyOpenFacetMenu = state && !this.tutorialOpen ? facet : null
     },
     onResult(event) {
       // Update store
@@ -207,6 +208,10 @@ export default {
     page(newPage) {
       this.helper.setPage(newPage).search()
       // console.log(newPage)
+    },
+    // When tutorial opens, close any dropdown menus
+    tutorialOpen(open) {
+      if (open) this.currentlyOpenFacetMenu = null
     },
   },
 }
