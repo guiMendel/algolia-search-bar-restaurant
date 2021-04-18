@@ -94,6 +94,9 @@ const store = createStore({
 
     toggleTutorial(state, open) {
       state.tutorialOpen = open
+
+      // If closing the tutorial, register that it's already been done 
+      if (!open) localStorage.setItem("not-the-first-rodeo", true)
     },
 
     setSplitScreen(state) {

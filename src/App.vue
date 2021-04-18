@@ -43,7 +43,7 @@
         class="toggle-tutorial"
         @click="toggleTutorial(true)"
         icon="help_outline"
-        hoverMessage="Quick demo tour"
+        hoverMessage="Demo tour"
       />
     </div>
 
@@ -129,6 +129,11 @@ export default {
 
     // Listen to changes in screen width
     window.addEventListener("resize", () => this.setSplitScreen())
+
+    // Show tutorial if this is the first time in the page
+    if (!localStorage.getItem("not-the-first-rodeo")) {
+      this.toggleTutorial(true)
+    }
   },
 }
 </script>
