@@ -61,7 +61,7 @@ const store = createStore({
       // Highlight restaurant
       commit("highlightRestaurant", {
         restaurantId,
-        duration: 2000,
+        duration: 4000,
         lock: true,
       })
     },
