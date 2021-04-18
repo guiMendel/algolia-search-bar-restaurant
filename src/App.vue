@@ -9,7 +9,7 @@
       placeholder="search by name, cuisine or location"
     />
 
-    <div id="results" :class="{ hide: splitScreen && mapOpen }">
+    <div id="results" :style="resultsStyle">
       <!-- results -->
       <restaurant-index />
     </div>
@@ -39,6 +39,7 @@
         :hoverMessage="mapHoverMessage"
       />
       <circle-button
+        v-show="!tutorialOpen"
         class="toggle-tutorial"
         @click="toggleTutorial(true)"
         icon="help_outline"
@@ -78,6 +79,10 @@ export default {
       "tutorialOpen",
       "splitScreen",
     ]),
+    resultsStyle() {
+      // When split screen & map is extended, hide
+      return { display: this.splitScreen && this.mapOpen ? "none" : "initial" }
+    },
     locationIcon() {
       if (this.usingNYcoords) return "location_off"
       else if (this.coords) return "location_on"

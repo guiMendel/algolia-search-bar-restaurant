@@ -99,7 +99,7 @@ export default {
       }
     },
     advanceOn(passes) {
-      if (passes) this.advance()
+      if (passes && this.active) this.advance()
     },
   },
   beforeUnmount() {

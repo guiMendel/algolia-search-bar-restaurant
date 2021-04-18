@@ -143,7 +143,10 @@ export default {
     setTimeout(() => (this.loading = false), 2000)
 
     // Scroll to any selected restaurants
-    this.$store.commit("subscribeToRestaurantSelection", this.scrollTo)
+    this.$store.commit("subscribeToRestaurantSelection", {
+      onSelect: this.scrollTo,
+      observer: "index",
+    })
   },
   watch: {
     coords() {

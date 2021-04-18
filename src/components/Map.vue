@@ -243,11 +243,11 @@ export default {
     this.updateMap()
 
     // Open map when a restaurant is selected from the index
-    this.$store.commit(
-      "subscribeToRestaurantSelection",
-      (restaurantId, selector) =>
+    this.$store.commit("subscribeToRestaurantSelection", {
+      observer: "map",
+      onSelect: (restaurantId, selector) =>
         selector === "index" && this.focusOnRestaurant(restaurantId),
-    )
+    })
   },
   watch: {
     coords() {

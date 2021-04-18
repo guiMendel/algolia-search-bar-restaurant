@@ -16,7 +16,7 @@ const store = createStore({
       splitScreen: window.innerWidth >= 1024,
 
       // Holds a list of callbacks to call upon a restaurant's selection
-      restaurantSelectionObservers: [],
+      restaurantSelectionObservers: {},
 
       highlightedRestaurant: null,
       highlightTimeout: null,
@@ -52,7 +52,9 @@ const store = createStore({
       { restaurantId, selector = "anonymous" },
     ) {
       // Alert observers
-      for (const observerCallback of state.restaurantSelectionObservers)
+      for (const observerCallback of Object.values(
+        state.restaurantSelectionObservers,
+      ))
         observerCallback(restaurantId, selector)
 
       // Highlight restaurant
@@ -78,8 +80,11 @@ const store = createStore({
     },
 
     // Subscribe a callback to the restaurant selection event
-    subscribeToRestaurantSelection(state, onSelect) {
-      state.restaurantSelectionObservers.push(onSelect)
+    subscribeToRestaurantSelection(state, { onSelect, observer }) {
+      state.restaurantSelectionObservers[observer] = onSelect
+    },
+    unsubscribeToRestaurantSelection(state, observer) {
+      delete state.restaurantSelectionObservers[observer]
     },
 
     toggleMap(state, open) {

@@ -33,6 +33,8 @@ export default {
   data() {
     return {
       currentTutorialPhase: 0,
+      // Indicates whether a restaurant has been selected in the current tutorial phase
+      restaurantSelectedDuringPhase: false,
     }
   },
   computed: {
@@ -86,16 +88,16 @@ export default {
           position: ["top", "left"],
         },
         {
-          show: ["location-message", "map", "results", "main-buttons"],
+          show: ["location-message", "map", "main-buttons", "results"],
           action: this.openMap,
-          condition: () => !this.mapOpen,
+          advanceOn: this.restaurantSelectedDuringPhase,
           content: `By selecting one of the pins, you will be scrolled to the <b>corresponding restaurant</b>. Give it a try!<br>Tip: if you don't see any pins, try turning on the NY location simulator`,
           position: ["top", "left"],
         },
         {
           show: ["location-message", "map", "results"],
           action: () => this.toggleMap(false),
-          condition: () => this.mapOpen,
+          advanceOn: this.restaurantSelectedDuringPhase,
           content: `You can also select a restaurant on the list to be scrolled to it's <b>position on the map</b>! Try it out!`,
           position: ["top", "left"],
         },
@@ -111,10 +113,24 @@ export default {
     },
   },
   watch: {
-    // Close tutorial when there are no more phases to display
     currentTutorialPhase(value) {
+      // Reset indicator
+      this.restaurantSelectedDuringPhase = false
+
+      // Close tutorial when there are no more phases to display
       if (value >= this.tutorialPhases.length) this.toggleTutorial(false)
     },
+  },
+  mounted() {
+    // Watch for restaurant selection to update indicator
+    this.$store.commit("subscribeToRestaurantSelection", {
+      observer: "tutorial",
+      onSelect: () => (this.restaurantSelectedDuringPhase = true),
+    })
+  },
+  beforeUnmount() {
+    // Unsubscribe
+    this.$store.commit("unsubscribeToRestaurantSelection", "tutorial")
   },
 }
 </script>
