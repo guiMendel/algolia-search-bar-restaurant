@@ -14,13 +14,14 @@ Hope you have a great day!
 ### Frontend
 The frontend tool I picked was Vue.
 
-I broke the UI interface down mainly into components for the **search bar**, the **results index** and the **map**.
+I broke the UI interface down mainly into components for the **search bar**, the **results index**, the **map** and the **tutorial**.
 
 I used Vuex to manage state access for:
  - The current **results**
  - The results' **page**
  - The user's **coordinates**
  - Which restaurant is being **highlighted** by the user
+ - Several **indicators** of the current state of the app, such as `mapOpen`
 
 And I also used it for a neat little implementation of the `Observer design pattern` for components to listen for **restaurant selection**.
 
@@ -65,3 +66,11 @@ I needed to plug in Vuex. As much as I love Vuex, it was something I was trying 
 Then came hosting. It was another big challenge, as I used Vite to bundle my app, and it took me a long time to find out this choice would lead to some complications with GitHub Pages.
 
 Fortunately, I eventually found out all I had to do was add a file called `.nojekyll` to the GitHub Pages repo. Go figure.
+
+### Final stop
+
+The last idea that I really wanted to implement was a tour of the page. I really wasn't sure I'd have enough time, so I left this for last — but fortunately, I did have time!
+
+And so I spent a whole Sunday working on this interface that floats around the page and points the user to all the cool stuff I implemented. It was honestly quite fun revisiting everything this one last time.
+
+I hope you enjoy the little tour I put together at the end. Go ahead and give it a go!
