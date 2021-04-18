@@ -38,8 +38,9 @@
         :icon="mapIcon"
         :hoverMessage="mapHoverMessage"
       />
+      <!-- dont show if map open -->
       <circle-button
-        v-show="!tutorialOpen"
+        v-show="!tutorialOpen && !mapOpen"
         class="toggle-tutorial"
         @click="toggleTutorial(true)"
         icon="help_outline"
@@ -161,7 +162,7 @@ export default {
   z-index: 100;
 
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
   align-items: center;
   gap: 1.5rem;
 
