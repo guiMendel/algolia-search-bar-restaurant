@@ -4,7 +4,7 @@
     <tutorial v-if="showTutorial" @close="showTutorial = false" />
 
     <!-- buttons -->
-    <div class="buttons">
+    <div id="main-buttons">
       <circle-button
         class="toggle-NY-coords"
         :class="{ active: !useNYcoords, disabled: !coords }"
@@ -31,7 +31,10 @@
     </div>
 
     <!-- search bar -->
-    <search-bar placeholder="search by name, cuisine or location" />
+    <search-bar
+      id="search-bar"
+      placeholder="search by name, cuisine or location"
+    />
 
     <div class="results" :class="{ hide: splitScreen && showMap }">
       <!-- results -->
@@ -173,7 +176,7 @@ export default {
   height: 100%;
 }
 
-.buttons {
+#main-buttons {
   z-index: 100;
 
   display: flex;
@@ -186,11 +189,11 @@ export default {
   right: 2rem;
 }
 
-.buttons > *.active {
+#main-buttons > *.active {
   color: var(--blue);
 }
 
-.buttons > *.disabled {
+#main-buttons > *.disabled {
   color: var(--light-gray);
   background: var(--gray);
 }
@@ -243,7 +246,7 @@ export default {
   }
 }
 @media (min-width: 850px) {
-  .buttons {
+  #main-buttons {
     flex-direction: column-reverse;
   }
 

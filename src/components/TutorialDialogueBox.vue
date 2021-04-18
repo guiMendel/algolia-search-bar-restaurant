@@ -19,19 +19,34 @@ export default {
   props: {
     vertical: String,
     horizontal: String,
+    highlight: Array,
   },
   components: {
     CircleButton,
+  },
+  mounted() {
+    // Highlight all requested elements
+    for (const id of this.highlight) {
+      // document.getElementById(id).style.zIndex = 225
+      document.getElementById(id).classList.add("tutorial-highlight")
+    }
+  },
+  beforeUnmount() {
+    // Undo element highlighting
+    for (const id of this.highlight) {
+      document.getElementById(id).classList.remove("tutorial-highlight")
+    }
   },
 }
 </script>
 
 <style scoped>
 main {
-  position: absolute;
+  position: fixed;
 
-  padding: 2rem 2.5rem 1.5rem;
+  padding: 2rem 2rem 3rem;
   width: max-content;
+  max-width: min(40rem, 80vw);
 
   background: var(--background);
   border-radius: 20px;
@@ -40,7 +55,12 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
+
+  font-size: 1.3rem;
+  font-weight: 600;
+
+  box-shadow: 0 1px 100px 40px rgba(24, 24, 26, 0.4);
 }
 
 .close {
@@ -68,13 +88,16 @@ main {
 }
 
 .next {
+  position: absolute;
+  bottom: -2rem;
+
   padding: 0.5rem;
   /* background-color: var(--blue); */
   background: var(--background-blue);
   color: white;
   border-radius: 50%;
 
-  font-size: 2rem;
+  font-size: 3rem;
 
   cursor: pointer;
 
@@ -100,5 +123,22 @@ main {
 
 .horizontal-right {
   right: 2rem;
+}
+</style>
+
+<style>
+.tutorial-highlight {
+  z-index: 200 !important;
+  outline: 5px solid var(--vibrant-blue);
+  outline-offset: 5px;
+}
+
+@keyframes float {
+  from {
+    transform: none;
+  }
+  to {
+    transform: translateY(-5px);
+  }
 }
 </style>

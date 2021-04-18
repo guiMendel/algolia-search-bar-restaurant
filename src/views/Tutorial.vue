@@ -1,10 +1,19 @@
 <template>
+  <!-- hides all elemets but the highlighted one -->
+  <div class="shadow"></div>
+
+  <!-- stays on top of all elements, even the highlighted one -->
   <div class="tutorial-container">
     <tutorial-dialogue-box
       @close="$emit('close')"
-      vertical="top"
+      vertical="center"
       horizontal="center"
-      >I'm a box</tutorial-dialogue-box
+      :highlight="['search-bar']"
+    >
+      <p>
+        The search bar offers a <b>search-as-you-type</b> experience, and provides a
+        wide variety of filters to <b>further refine</b> your search
+      </p></tutorial-dialogue-box
     >
   </div>
 </template>
@@ -22,27 +31,39 @@ export default {
 </script>
 
 <style scoped>
-.tutorial-container {
+.shadow {
+  position: fixed;
   z-index: 200;
 
+  width: 100vw;
+  height: 100vh;
+
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  animation: fade-in 500ms;
+}
+
+.tutorial-container {
+  z-index: 220;
   position: fixed;
+
   top: 0;
   left: 0;
 
   width: 100vw;
   height: 100vh;
 
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
+  /* background-color: white; */
 
   padding: 2rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  font-size: 1.3rem;
-
-  animation: fade-in 500ms;
+b {
+  font-weight: 800;
+  color: var(--blue);
 }
 
 @keyframes fade-in {
