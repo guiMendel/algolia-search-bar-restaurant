@@ -11,8 +11,8 @@
       :highlight="['search-bar']"
     >
       <p>
-        The search bar offers a <b>search-as-you-type</b> experience, and provides a
-        wide variety of filters to <b>further refine</b> your search
+        The search bar offers a <b>search-as-you-type</b> experience, and
+        provides a wide variety of filters to <b>further refine</b> your search
       </p></tutorial-dialogue-box
     >
   </div>
@@ -59,6 +59,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  pointer-events: none;
 }
 
 b {

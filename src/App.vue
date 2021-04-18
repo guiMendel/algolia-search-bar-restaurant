@@ -26,7 +26,7 @@
         class="toggle-tutorial"
         @click="showTutorial = true"
         icon="help_outline"
-        hoverMessage="Quick tour"
+        hoverMessage="Quick demo tour"
       />
     </div>
 

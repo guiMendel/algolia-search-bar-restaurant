@@ -61,6 +61,8 @@ main {
   font-weight: 600;
 
   box-shadow: 0 1px 100px 40px rgba(24, 24, 26, 0.4);
+
+  pointer-events: all;
 }
 
 .close {
