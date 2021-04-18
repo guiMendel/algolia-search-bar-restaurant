@@ -20,7 +20,7 @@
         v-if="advanceButtonAvailable"
         @click.self="advance"
         class="material-icons-round next"
-        >navigate_next</span
+        >{{ isLast ? "done" : "navigate_next" }}</span
       >
     </main>
   </transition>
@@ -50,6 +50,8 @@ export default {
     advanceOn: Boolean,
     // An action to be performed when this dialogue pops up
     action: Function,
+    // Indicates if this is the last dialogue box of the tutorial sequence
+    isLast: Boolean,
   },
   data: () => ({
     // Indicates whether advance has been called
@@ -61,7 +63,6 @@ export default {
   computed: {
     advanceButtonAvailable() {
       // If no advanceOn is set, or if it is set but was already true from the very beginning
-      console.log(this.advanceOn)
       return this.advanceOn == null || (this.advanceOn && !this.advancing)
     },
   },

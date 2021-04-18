@@ -17,6 +17,7 @@
       :content="phase.content"
       :advanceOn="phase.advanceOn"
       :action="phase.action"
+      :is-last="index == tutorialPhases.length - 1"
     />
   </div>
 </template>
@@ -42,7 +43,7 @@ export default {
     tutorialPhases() {
       return [
         {
-          content: `Welcome to our <b>Restaurant Locator Demo</b>! This quick guide will walk you through it's main features`,
+          content: `Welcome to our <b>Restaurant Locator Demo</b>! This quick guide will walk you through it's main features. You can exit this tour at any time by clicking the X button at the top right of this box`,
         },
         {
           highlight: ["search-bar"],
@@ -57,7 +58,7 @@ export default {
         {
           show: ["results"],
           highlight: ["top-page-control"],
-          content: `You can <b>cycle through</b> the pages by clicking these arrows, or <b>select the page number</b> and input a specific one`,
+          content: `You can <b>cycle through</b> the pages by clicking these arrows, or select the page number and <b>input a specific one</b>`,
           position: ["bottom", "left"],
         },
         {
@@ -91,7 +92,7 @@ export default {
           show: ["location-message", "map", "main-buttons", "results"],
           action: this.openMap,
           advanceOn: this.restaurantSelectedDuringPhase,
-          content: `By selecting one of the pins, you will be scrolled to the <b>corresponding restaurant</b>. Give it a try!<br>Tip: if you don't see any pins, try turning on the NY location simulator`,
+          content: `By selecting one of the pins, you will be scrolled to the <b>corresponding restaurant</b>. Give it a try!<br><small>Tip: if you don't see any pins, try turning on the NY location simulator</small>`,
           position: ["top", "left"],
         },
         {
@@ -100,6 +101,11 @@ export default {
           advanceOn: this.restaurantSelectedDuringPhase,
           content: `You can also select a restaurant on the list to be scrolled to it's <b>position on the map</b>! Try it out!`,
           position: ["top", "left"],
+        },
+        {
+          show: ["location-message", "map", "results"],
+          content: `And voilà, that's it!<br>Try searching for restaurants of your favorite cuisine!`,
+          position: ["top", "right"],
         },
       ]
     },
