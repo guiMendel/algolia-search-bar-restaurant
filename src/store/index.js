@@ -20,6 +20,7 @@ const store = createStore({
 
       highlightedRestaurant: null,
       highlightTimeout: null,
+      highlightLocked: false,
     }
   },
   getters: {
@@ -58,7 +59,11 @@ const store = createStore({
         observerCallback(restaurantId, selector)
 
       // Highlight restaurant
-      commit("highlightRestaurant", { restaurantId, duration: 2000 })
+      commit("highlightRestaurant", {
+        restaurantId,
+        duration: 2000,
+        lock: true,
+      })
     },
   },
   mutations: {
@@ -95,7 +100,7 @@ const store = createStore({
     toggleTutorial(state, open) {
       state.tutorialOpen = open
 
-      // If closing the tutorial, register that it's already been done 
+      // If closing the tutorial, register that it's already been done
       if (!open) localStorage.setItem("not-the-first-rodeo", true)
     },
 
@@ -104,9 +109,15 @@ const store = createStore({
     },
 
     // Set the referenced restaurant as "highlighted" for the given duration
-    highlightRestaurant(state, { restaurantId, duration = 1000 }) {
+    highlightRestaurant(state, { restaurantId, duration = 1000, lock }) {
+      // If already locked, only another lock request may override the highlight
+      if (state.highlightLocked && !lock) return
+
       // Highlight this restaurant
       state.highlightedRestaurant = restaurantId
+
+      // If set to lock, lock the highlighted restaurant for this duration too
+      if (lock) state.highlightLocked = true
 
       // Set a timer to disable the highlight, erase previous timeout if present
       if (state.highlightTimeout) clearInterval(state.highlightTimeout)
@@ -114,6 +125,7 @@ const store = createStore({
       state.highlightTimeout = setTimeout(() => {
         state.highlightTimeout = null
         state.highlightedRestaurant = null
+        state.highlightLocked = false
       }, duration)
     },
   },
