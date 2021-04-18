@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main :class="[`vertical-${vertical}`, `horizontal-${horizontal}`]">
     <span @click.self="$emit('close')" class="material-icons-round close"
       >close</span
     >
@@ -16,6 +16,10 @@ import CircleButton from "./CircleButton.vue"
 export default {
   name: "TutorialDialogueBox",
   emits: ["close"],
+  props: {
+    vertical: String,
+    horizontal: String,
+  },
   components: {
     CircleButton,
   },
@@ -24,7 +28,7 @@ export default {
 
 <style scoped>
 main {
-  position: relative;
+  position: absolute;
 
   padding: 2rem 2.5rem 1.5rem;
   width: max-content;
@@ -82,4 +86,19 @@ main {
   filter: brightness(1.3);
 }
 
+.vertical-top {
+  top: 2rem;
+}
+
+.vertical-bottom {
+  bottom: 2rem;
+}
+
+.horizontal-left {
+  left: 2rem;
+}
+
+.horizontal-right {
+  right: 2rem;
+}
 </style>

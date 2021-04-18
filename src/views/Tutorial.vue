@@ -1,6 +1,9 @@
 <template>
   <div class="tutorial-container">
-    <tutorial-dialogue-box @close="$emit('close')"
+    <tutorial-dialogue-box
+      @close="$emit('close')"
+      vertical="top"
+      horizontal="center"
       >I'm a box</tutorial-dialogue-box
     >
   </div>
@@ -32,7 +35,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
 
-  padding: 1rem;
+  padding: 2rem 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
