@@ -159,7 +159,7 @@ export default {
 }
 
 #main-buttons {
-  z-index: 100;
+  z-index: 90;
 
   display: flex;
   flex-direction: row-reverse;
