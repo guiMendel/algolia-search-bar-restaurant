@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.11.3",
+    "@vitejs/plugin-vue": "^2.2.0",
     "algoliasearch": "^4.8.6",
     "algoliasearch-helper": "^3.4.4",
     "spherical-geometry-js": "^2.0.0",
