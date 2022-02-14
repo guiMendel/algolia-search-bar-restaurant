@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "deploy": "node scripts/gh-pages-deploy.js"
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@googlemaps/js-api-loader": "^1.11.3",
@@ -18,6 +18,8 @@
   "devDependencies": {
     "@vue/compiler-sfc": "^3.0.4",
     "execa": "latest",
+    "gh-pages": "^3.2.3",
     "vite": "^1.0.0-rc.13"
-  }
+  },
+  "homepage": "https://guimendel.github.io/algolia-search-bar-restaurant/"
 }
