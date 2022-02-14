@@ -209,7 +209,7 @@ main {
 
 .restaurant.highlighted {
   filter: sepia(0.05);
-  box-shadow: 0 5px 30px 2px rgba(24, 24, 26, 0.2);
+  box-shadow: 0 5px 10px 2px rgba(24, 24, 26, 0.2);
   transform: translate(0, -5px);
 }
 
